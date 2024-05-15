@@ -1,8 +1,16 @@
 import dayjs from "dayjs";
+import getIp from './lib/getIpAddress'
 
  
 export const auto = {
-	widthTry: (fun, init)=>{ try{ return fun() }catch(e){ console.log({e}); return init } },
+	getIp: getIp,
+	try: (fun, init)=>{ 
+		try{ 
+			return fun() 
+		}catch(e){ 
+			console.log({e}); return init 
+		}
+	},
 	withPromise:(...args)=>{
 		return (value)=>{
 			const [first, ...other] = args;
@@ -30,7 +38,7 @@ export const auto = {
 	isArr: (str)=> str?.slice(0, 1) === '[' && str?.slice(-1) === ']',
   
     // 格式化json字符串
-	jsonFormat:(arg, init = {})=>auto.widthTry(()=>(auto.isArr(arg) || auto.isObj(arg)) ? JSON.parse(arg) : init, init),
+	jsonFormat:(arg, init = {})=>auto.try(()=>(auto.isArr(arg) || auto.isObj(arg)) ? JSON.parse(arg) : init, init),
    
     // uuid
   	uuid:(num = 6)=>(Date.now() + Math.random().toString(36).substring(2)).slice((-1 * num) || -6),
@@ -40,6 +48,14 @@ export const auto = {
 	dateFormat: (day)=> day ?  dayjs(day) : dayjs(),
 
 	badge: (count, max = 99) => count > max ? (max + '+') : count,
+}
+
+
+export const assets = {
+	platform:{
+		douyin: require('../assets/platform/douyin.png'),
+		pipix: require('../assets/platform/pipix.png'),
+	},
 }
 
 export const reset = function (source, excludeKeys) {
