@@ -13,8 +13,8 @@ const Expand = memo(({ navigation })=>{
     const [config] = useState({
         data: [
             { name:'Fonts', key:'font', title: '更多字体' },
-            { name:'Douyin', key:'douyin', title: '抖音解析' },
-       
+            { name:'Short', key:'short', title: '短视频转存' },
+            { name:'Server', key:'server', title: 'HTTP服务器' },
         ]
     });
     const [state, setState] = useUpdate({
@@ -26,7 +26,6 @@ const Expand = memo(({ navigation })=>{
         return ()=>{
             navigation.navigate(item?.name)
         }
-        
     }
  
     return (

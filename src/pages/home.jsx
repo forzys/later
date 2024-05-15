@@ -13,12 +13,13 @@ import Modal from '@/components/Modal'
 import PickerModal from '@/components/Picker'
 import AnimatedProgress from '@/components/Progress'
 import Bounceable from '@/common/components/Bounceable'; 
-import Loading from "@/components/Loading";
+import Loading from "@/components/Loading"; 
 import Text from "@/common/components/Text";
 import {useUpdate} from "@/hooks/index";
 import Video from "react-native-video";
 import { SelectableText } from "@forzys/react-native-selectable-text"
 
+// https://music.163.com/#/song?id=29758362&uct2=Bi9QvLY2gaauSb6jm7cQ3w%3D%3D&fx-wechatnew=t1&fx-wxqd=t1&fx-wordtest=&fx-listentest=t3&shareToken=79608741481715435878_eaf53dfcdc81c3e70d91128f8e4fede7&dlt=0846&app_version=9.0.50
 
 const Home = memo(({ navigation })=>{ 
     const ref = useRef(null)
@@ -84,12 +85,12 @@ const Home = memo(({ navigation })=>{
         <Layout>
        
             <ScrollView  style={{flex: 1}} contentContainerStyle={{ paddingVertical: 12, gap: 12}}> 
-                <View style={{alignSelf:'center', alignItems: 'center', flex: 1,  }}> 
+                
+                {/* <View style={{alignSelf:'center', alignItems: 'center', flex: 1,  }}> 
                     
                     <Bounceable onPress={()=> onOpenServer()} >
                         <Text>OPEN Douyin jiexi</Text> 
                     </Bounceable>
-
 
                     <AnimatedProgress
                         size={30}
@@ -121,73 +122,67 @@ const Home = memo(({ navigation })=>{
                             <Text>OPEN</Text>
                         </TouchableOpacity>
                     </View> 
-                </View>
-
-              
- 
+                </View> */}
                 <View style={{alignSelf:'center'}}>  
                     <AppleCard
                         source={{uri: 'https://img2.woyaogexing.com/2024/04/30/0ce8ebf557130a2b!400x400.jpg'}}
                         onPress={() => {}}
-                        smallTitle={"NEW GAME"}
-                        largeTitle={"The Brilliance of Brawl Starts"}
-                        footnote={
-                            "The next game from the markers of Clash Royale is here. Tap to learn more."
-                        }
+                        smallTitle={"Today 5月14"}
+                        largeTitle={"每日摘要"}
+                        footnote={ "This card is updated daily with hot news, headline hot lists. Tap to learn more." }
                     />
                 </View> 
             </ScrollView>
 
 
-                    <Modal
-                        isOpen={!!videoOpt.poster} 
-                        style={[{ justifyContent: 'center',  alignItems: 'center', alignSelf:'center'}]}
-                        swipeToClose={state.swipeToClose}
-                        onClosed={()=>console.log('closed')}
-                        onOpened={()=>console.log('opend')}
-                        onClosingState={()=>console.log('closing')}
+            <Modal
+                isOpen={!!videoOpt.poster} 
+                style={[{ justifyContent: 'center',  alignItems: 'center', alignSelf:'center'}]}
+                swipeToClose={state.swipeToClose}
+                onClosed={()=>console.log('closed')}
+                onOpened={()=>console.log('opend')}
+                onClosingState={()=>console.log('closing')}
+            >
+
+                <Text>Basic modal</Text>
+                <Button
+                    title={`Disable swipeToClose(${state.swipeToClose ? "true" : "false"})`} 
+                    onPress={() => setState({ swipeToClose: !state.swipeToClose })} 
+                    style={{
+                        margin: 10,
+                        backgroundColor: "#3B5998",
+                        color: "white",
+                        padding: 10
+                    }} 
+                />
+
+                <View style={{alignSelf:'center'}}> 
+                    <AppOfTheDayCard
+                        title={"Colorfy: Coloring Art Games"}
+                        subtitle={"Drawing & painting for  everyone"}
+                        largeTitle={"APP" +  "OF THE" + "DAY"}
+                        buttonText={"GET"}
+                        iconSource={{uri:'https://img2.woyaogexing.com/2024/04/30/879ddd0c0d899daa!400x400.jpg'}}
+                        backgroundSource={{uri: videoOpt?.poster || 'https://img2.woyaogexing.com/2024/04/30/e9d9f2c7cc108ede!400x400.jpg'}}
+                        buttonSubtitle={"In-App Purchases"}
+                        onPress={() => {}}
+                        onButtonPress={() => {}}
                     >
-
-                        <Text>Basic modal</Text>
-                        <Button
-                            title={`Disable swipeToClose(${state.swipeToClose ? "true" : "false"})`} 
-                            onPress={() => setState({ swipeToClose: !state.swipeToClose })} 
-                            style={{
-                                margin: 10,
-                                backgroundColor: "#3B5998",
-                                color: "white",
-                                padding: 10
-                            }} 
-                        />
-
-                        <View style={{alignSelf:'center'}}> 
-                            <AppOfTheDayCard
-                                title={"Colorfy: Coloring Art Games"}
-                                subtitle={"Drawing & painting for  everyone"}
-                                largeTitle={"APP" +  "OF THE" + "DAY"}
-                                buttonText={"GET"}
-                                iconSource={{uri:'https://img2.woyaogexing.com/2024/04/30/879ddd0c0d899daa!400x400.jpg'}}
-                                backgroundSource={{uri: videoOpt?.poster || 'https://img2.woyaogexing.com/2024/04/30/e9d9f2c7cc108ede!400x400.jpg'}}
-                                buttonSubtitle={"In-App Purchases"}
-                                onPress={() => {}}
-                                onButtonPress={() => {}}
-                            >
-                                {
-                                    !!videoOpt?.video && (
-                                        <View>
-                                            <Video 
-                                                source={{ uri: videoOpt?.video }}
-                                                style={{ width: '100%', height: '100%' }}
-                                                rate={1} volume={10} muted={true}
-                                                resizeMode="cover" repeat={true}
-                                            />
-                                        </View>
-                                    )
-                                }
-                            </AppOfTheDayCard>
-                        </View>
-
-                </Modal> 
+                        {
+                            !!videoOpt?.video && (
+                                <View>
+                                    <Video 
+                                        source={{ uri: videoOpt?.video }}
+                                        style={{ width: '100%', height: '100%' }}
+                                        rate={1} volume={10} muted={true}
+                                        resizeMode="cover" repeat={true}
+                                    />
+                                </View>
+                            )
+                        }
+                    </AppOfTheDayCard>
+                </View> 
+            </Modal> 
 
 
               

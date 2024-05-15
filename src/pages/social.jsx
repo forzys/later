@@ -31,7 +31,7 @@ export default function App() {
 			setState({
 				_last: dayjs(ref._last).format('YYYY-MM-DD hh:mm:ss') 
 			}) 
-		}, 1000) 
+		}, 1000)
 	}
 	
 	const onTextChange = (value)=>{ 
