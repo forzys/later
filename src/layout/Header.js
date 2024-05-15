@@ -1,7 +1,6 @@
 
 import React from "react"; 
 import { View, Image, SafeAreaView, TouchableOpacity, Platform, StatusBar, StyleSheet } from "react-native";
-// import LinearGradient from "react-native-linear-gradient"; 
 import Bounceable from "@/common/components/Bounceable";
 import Icon from "@/common/components/Icon";
 import Text from "@/common/components/Text";
@@ -89,15 +88,13 @@ export const AppleHeader = ({ style, dateTitleTextStyle, largeTitleTextStyle, on
   );
 };
 
-const SidedComponent = ({ style, icon, color = "#000", size = 18, TouchableComponent = Bounceable, customComponent, onPress }) => {
+const SidedComponent = ({ style, icon, color = "rgba(0,0,0,0.45)", size = 18, TouchableComponent = Bounceable, customComponent, onPress }) => {
     const hitSlop = {
         top: 8,
         left: 8,
         right: 8,
         bottom: 8,
-    };
-
-    console.log({ icon })
+    }; 
 
     return (
         <TouchableComponent

@@ -19,17 +19,25 @@ const Layout = memo((props)=>{
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: theme?.background  }}>
             {/* <StatusBar /> */}
-           <View style={[{ height: props?.insets? insets.top: 0, backgroundColor: theme?.transparent }, props.style]}></View>
+           {/* <View style={[{ height: props?.insets? insets.top: 0, backgroundColor: theme?.transparent }, props.style]}></View> */}
 
            <AppBar 
                 mode="center-aligned" 
                 statusBarHeight={insets.top} 
-                style={{ backgroundColor: theme?.barBg }}
-                title={props?.title || route.name}
-                rightIcon={props?.rightIcon}
-                onRightPress={props?.onRightPress}
+                style={{ backgroundColor: props?.bg || theme?.barBg }}
+                title={typeof props?.title !== 'undefined' ? props?.title : route.name}
+      
+                leftSize={24}
+                leftIcon={props?.leftIcon}
+                leftColor={props?.leftColor}
+                leftCustomComponent={props?.renderLeft}
+                onLeftPress={props?.onLeftPress}
+
                 rightSize={24}
+                rightIcon={props?.rightIcon}
                 rightColor={props?.rightColor}
+                rightCustomComponent={props?.renderRight} 
+                onRightPress={props?.onRightPress}
             />
 
             <View style={ StyleSheet.flatten([{ flex: 1 }, props.style])}>
