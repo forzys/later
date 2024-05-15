@@ -10,15 +10,22 @@ import configs from '@/common/configs';
 // import { AutoEvent } from '@/common/event'
 import { useReceive } from '@/hooks'
 import HomeScreen from "./pages/home";
+
 import ReceiveScreen from "./pages/receive";
 import ExpandScreen from "./pages/expand";
 import SocialScreen from "./pages/social";
 import NotesScreen from "./pages/notes";
 import ModalScreen from "./pages/modal";
-import CollectionScreen from "./pages/collection";
+// import CollectionScreen from "./pages/collection";
 
 import FontsScreen from "./pages/expands/fonts";
-import DouyinScreen from "./pages/expands/douyin";
+import ShortScreen from "./pages/expands/short";
+import ServerScreen from "./pages/expands/server";
+
+import FolderScreen from "./pages/second/folder";
+import EditerScreen from "./pages/second/editer";
+
+
 import { useFontFace } from "./hooks";
 
 const { isAndroid } = configs?.devices
@@ -111,9 +118,9 @@ const routers = [
 		// icon: 'clipboard-check-outline' ,
 		icon: 'server',
 		selectedColor: '#325BFA', 
-		name: 'Collection',
-		title: '抽屉', 
-        component: CollectionScreen,
+		name: 'Notes',
+		title: '抽屉',
+        component: NotesScreen,
 	},
 	{
 		icon: 'shape-square',
@@ -141,9 +148,12 @@ const routers = [
 // 二级页面路由
 const childrenRouter = [
 	// { name: 'Fonts', component: FontsScreen }, 
-	{ name: 'Notes', component: NotesScreen }, 
+	// { name: 'Notes', component: NotesScreen }, 
 	{ name: 'Fonts', component: FontsScreen }, 
-	{ name: 'Douyin', component: DouyinScreen }, 
+	{ name: 'Short', component: ShortScreen }, 
+	{ name: 'Folder', component: FolderScreen }, 
+	{ name: 'Editer', component: EditerScreen }, 
+	{ name: 'Server', component: ServerScreen }, 
 	// { name: 'Setting', component: SettingScreen },
 	// { name: 'Detail', component: DetailScreen },
 	// { name: 'Search', component: SearchScreen },

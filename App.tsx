@@ -8,10 +8,10 @@ import FontFaceProvider from './src/provider/fontface'
 import ErrorBoundary from './src/provider/boundary'
 import AuthProvider from './src/provider/auth'
 import ServerProvider from './src/provider/server'
-
+import ReceiveProvider from './src/provider/receive'
 // import ModalProvider from './src/provider/modal'
 // import MenuProvider from './src/provider/menu'
-// import ReceiveProvider from './src/provider/receive'
+
 
 
 import App from './src'
@@ -25,7 +25,9 @@ export default memo(()=>(
 					<ErrorBoundary> 
 						<AuthProvider>
 							<ServerProvider>
-								<App />
+								<ReceiveProvider>
+									<App />
+								</ReceiveProvider>
 							</ServerProvider>
 						</AuthProvider>
 					</ErrorBoundary> 
