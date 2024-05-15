@@ -196,6 +196,7 @@ const VideoPlayer  = ({
                             {/* inline video*/}
                             <Video
                                 repeat={repeat}
+                                cache={false}
                                 paused={!isPlaying}
                                 fullscreenAutorotate={true}
                                 posterResizeMode="cover"
@@ -491,6 +492,7 @@ const VideoPlayer  = ({
                             paused={!isPlaying}
                             fullscreenAutorotate={true}
                             posterResizeMode="contain"
+                            cache={false}
                             style={[StyleSheet.absoluteFillObject, { backgroundColor: 'black' }]}
                             {...rest}
                             source={videoSource}

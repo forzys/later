@@ -1,16 +1,8 @@
-import { forwardRef,  useCallback,
-    useImperativeHandle,
-    useMemo,
-    useRef,
-    useState,
-    useLayoutEffect, 
-    useEffect 
-} from 'react';
-  
+import { forwardRef, useCallback, useImperativeHandle,useMemo, useRef, useState, useLayoutEffect, useEffect } from 'react';
 import {Dimensions, BackHandler, Animated, Pressable, StyleSheet, View, PanResponder,useWindowDimensions, Keyboard,  Platform } from 'react-native'; 
  
 const DEFAULT_HANDLE_BAR_DEFAULT_HEIGHT = 25; // paddingTop (10) + paddingBottom (10) + height (5)
- 
+
 const ANIMATIONS  = {
     SLIDE:'slide',
     SPRING: 'spring',
@@ -27,19 +19,18 @@ const CUSTOM_BACKDROP_POSITIONS = {
     TOP: 'top',
     BEHIND: 'behind',
 }
- 
+
 const AnimatedTouchableBackdrop = Animated.createAnimatedComponent(Pressable);
 
 const styles = StyleSheet.create({
     sharedBackdropStyle: StyleSheet.absoluteFillObject,
- 
     container: {
         position: 'absolute',
         justifyContent: 'flex-end',
-        right: 0,
-        left: 0, 
-        bottom: 0,
         backgroundColor: 'transparent',
+        left: 0, 
+        right: 0,
+        bottom: 0, 
         opacity: 1,
     },
 });
@@ -134,28 +125,29 @@ const DefaultHandleBar = ({ style, ...otherProps }) => (
 );
 
 const materialStyles = StyleSheet.create({
-  dragHandleContainer: {
-    padding: 18,
-    width: 50,
-    alignSelf: 'center',
-  },
-  dragHandle: {
-    height: 4,
-    width: 32,
-    backgroundColor: '#49454F',
-    opacity: 0.4,
-    alignSelf: 'center',
-    borderRadius: 50,
-  },
+    dragHandleContainer: {
+        padding: 18,
+        width: 50,
+        alignSelf: 'center',
+    },
+    dragHandle: {
+        height: 4,
+        width: 32,
+        backgroundColor: '#49454F',
+        opacity: 0.4,
+        alignSelf: 'center',
+        borderRadius: 50,
+    },
 
-  contentContainer: {
-    backgroundColor: '#F7F2FA',
-    width: '100%',
-    overflow: 'hidden',
-    borderTopLeftRadius: 28,
-    borderTopRightRadius: 28,
-  },
-  contentContainerShadow:
+    contentContainer: {
+        backgroundColor: '#F1F1F1',
+        // backgroundColor: '#F7F2FA',
+        width: '100%',
+        overflow: 'hidden',
+        borderTopLeftRadius: 28,
+        borderTopRightRadius: 28,
+    },
+    contentContainerShadow:
     Platform.OS === 'android'
       ? {
           elevation: 7,
@@ -312,7 +304,6 @@ const normalizeHeight = (height) => {
           : height;
     return clampedHeight;
 };
- 
 
 const separatePaddingStyles = ( style ) => {
     if (!style) return;
@@ -569,7 +560,6 @@ const BottomSheet = forwardRef(
     
         if (sheetOpen) _animatedContainerHeight.setValue(newHeight);
     };
-
   
     useLayoutEffect(() => {
         if (!modal) return; // no auto layout adjustment when backdrop is hidden

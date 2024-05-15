@@ -5,23 +5,30 @@ import { Pressable, View, Image, ImageBackground, StyleSheet, } from "react-nati
 import RNBounceable from '@/common/components/Bounceable';
 import Text from '@/common/components/Text';
 import configs from '@/common/configs'
-
-const { width, height } = configs.screen
  
-const SimpleCard = memo((props)=>{
+
+export const WarpCard = memo((props)=>{
     return (
-        <View style={[styles.warp, props?.disabled ? styles.disabled : styles.action, props.style]}>
-            <RNBounceable onPress={props?.onPress} style={props.style}>
-                {props.children}
-            </RNBounceable> 
+        <View style={StyleSheet.flatten([styles.warp, props?.style])}>
+            {props.children}
         </View>
     )
 })
 
-export const ButtonCard = memo((props)=>{
+const SimpleCard = memo((props)=>{
     return (
-        <SimpleCard onPress={props?.onPress} style={props.style}>
-            <Text color={props?.color} bold style={{ marginTop:-3 }}>{props?.text || props?.children}</Text>
+        <WarpCard style={StyleSheet.flatten([props?.disabled ? styles.disabled : styles?.action, props.style])}>
+            <RNBounceable onPress={props?.onPress} disabled={props?.disabled} style={props?.style}>
+                {props.children}
+            </RNBounceable> 
+        </WarpCard>
+    )
+})
+
+export const ButtonCard = memo(({ bold = true,  textProps={},  ...props})=>{
+    return (
+        <SimpleCard onPress={props?.onPress} style={props.style} disabled={props?.disabled}>
+            <Text color={props?.color} bold={bold} mt style={props?.disabled ?styles.disabled : styles?.action} {...textProps}>{props?.text || props?.children}</Text>
         </SimpleCard>
     )
 })
@@ -93,7 +100,7 @@ CarouselCard.defaultProps = {
 
 const styles =  StyleSheet.create({ 
     // SimpleCard
-    warp:{ 
+    warp:{
         flexDirection:'row',
         alignItems:'center', 
         alignSelf:'center', 
@@ -110,8 +117,11 @@ const styles =  StyleSheet.create({
         color: "white", 
         marginLeft: 16,
         fontWeight: "600",
-    },
- 
+    }, 
+
+    disabled:{
+        opacity: 0.75,
+    }
 });
  
 export default SimpleCard

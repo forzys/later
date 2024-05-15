@@ -1,9 +1,7 @@
-import React from 'react'; 
-import { View, StyleSheet, PanResponder, Animated, TouchableWithoutFeedback,
-  Dimensions,  Easing, BackHandler, Platform, Modal, Keyboard
-} from 'react-native';
+import { PureComponent } from 'react'; 
+import { View, StyleSheet, PanResponder, Animated, TouchableWithoutFeedback, Dimensions,  Easing, BackHandler, Platform, Modal, Keyboard } from 'react-native';
 
-const {height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
+const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH} = Dimensions.get('window');
 
 const styles = StyleSheet.create({
     wrapper: {
@@ -22,7 +20,7 @@ const styles = StyleSheet.create({
     }
 });
 
-export default class ModalBox extends React.PureComponent {
+export default class ModalBox extends PureComponent {
   
     static defaultProps = {
         startOpen: false,
@@ -88,8 +86,8 @@ export default class ModalBox extends React.PureComponent {
         // Needed for iOS because the keyboard covers the screen
         if (Platform.OS === 'ios') {
             this.subscriptions = [
-            Keyboard.addListener('keyboardWillChangeFrame', this.onKeyboardChange),
-            Keyboard.addListener('keyboardDidHide', this.onKeyboardHide)
+                Keyboard.addListener('keyboardWillChangeFrame', this.onKeyboardChange),
+                Keyboard.addListener('keyboardDidHide', this.onKeyboardHide)
             ];
         }
     }
@@ -451,22 +449,22 @@ export default class ModalBox extends React.PureComponent {
         const offsetX = (this.state.containerWidth - this.state.width) / 2;
 
         return (
-        <Animated.View
-            onLayout={this.onViewLayout}
-            style={[
-            styles.wrapper,
-            size,
-            this.props.style,
-            {
-                transform: [
-                {translateY: this.state.position},
-                {translateX: offsetX}
-                ]
-            }
-            ]}
-            {...this.state.pan.panHandlers}>
-            {this.props.children}
-        </Animated.View>
+            <Animated.View
+                onLayout={this.onViewLayout}
+                style={[
+                styles.wrapper,
+                size,
+                this.props.style,
+                {
+                    transform: [
+                    {translateY: this.state.position},
+                    {translateX: offsetX}
+                    ]
+                }
+                ]}
+                {...this.state.pan.panHandlers}>
+                {this.props.children}
+            </Animated.View>
         );
     }
 
@@ -486,13 +484,15 @@ export default class ModalBox extends React.PureComponent {
             importantForAccessibility="yes"
             accessibilityViewIsModal={true}
             style={[styles.transparent, styles.absolute]}
-            pointerEvents={'box-none'}>
-            <View
-            style={{flex: 1}}
             pointerEvents={'box-none'}
-            onLayout={this.onContainerLayout}>
-            {visible && this.renderBackdrop()}
-            {visible && this.renderContent()}
+        >
+            <View
+                style={{flex: 1}}
+                pointerEvents={'box-none'}
+                onLayout={this.onContainerLayout}
+            >
+                {visible && this.renderBackdrop()}
+                {visible && this.renderContent()}
             </View>
         </View>
         );
@@ -500,22 +500,23 @@ export default class ModalBox extends React.PureComponent {
         if (!this.props.coverScreen) return content;
 
         return (
-        <Modal
-            onRequestClose={() => {
-            if (this.props.backButtonClose) {
-                this.close();
-            }
-            }}
-            supportedOrientations={[
-            'landscape',
-            'portrait',
-            'portrait-upside-down'
-            ]}
-            transparent
-            visible={visible}
-            hardwareAccelerated={true}>
-            {content}
-        </Modal>
+            <Modal
+                onRequestClose={() => {
+                    if (this.props.backButtonClose) {
+                        this.close();
+                    }
+                }}
+                supportedOrientations={[
+                    'landscape',
+                    'portrait',
+                    'portrait-upside-down'
+                ]}
+                transparent
+                visible={visible}
+                hardwareAccelerated={true}
+            >
+                {content}
+            </Modal>
         );
     }
 
@@ -523,28 +524,22 @@ export default class ModalBox extends React.PureComponent {
 
     open() {
         if (this.props.isDisabled) return;
-        if (
-        !this.state.isAnimateOpen &&
-        (!this.state.isOpen || this.state.isAnimateClose)
-        ) {
-        this.onViewLayoutCalculated = () => {
-            this.animateOpen();
-            if (this.props.backButtonClose && Platform.OS === 'android')
-            BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
-            this.onViewLayoutCalculated = null;
-        };
-        this.setState({isAnimateOpen: true});
+        if ( !this.state.isAnimateOpen && (!this.state.isOpen || this.state.isAnimateClose)) {
+            this.onViewLayoutCalculated = () => {
+                this.animateOpen();
+                if (this.props.backButtonClose && Platform.OS === 'android')
+                BackHandler.addEventListener('hardwareBackPress', this.onBackPress);
+                this.onViewLayoutCalculated = null;
+            };
+            this.setState({isAnimateOpen: true});
         }
     }
 
     close() {
         if (this.props.isDisabled) return;
-        if (
-        !this.state.isAnimateClose &&
-        (this.state.isOpen || this.state.isAnimateOpen)
-        ) {
-        this.animateClose();
-        if (this.props.backButtonClose && Platform.OS === 'android')
+        if (!this.state.isAnimateClose && (this.state.isOpen || this.state.isAnimateOpen)) {
+            this.animateClose();
+            if (this.props.backButtonClose && Platform.OS === 'android')
             BackHandler.removeEventListener('hardwareBackPress', this.onBackPress);
         }
     }

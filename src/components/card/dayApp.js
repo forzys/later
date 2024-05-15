@@ -91,11 +91,10 @@ const styles = StyleSheet.create({
   },
   buttonSubtitleTextStyle: {
     fontSize: 9,
-    marginTop: 5,
     marginLeft: 3,
     color: 'white',
     fontWeight: '400',
-	textAlign: 'center',
+	  textAlign: 'center',
   },
 });
 
@@ -152,7 +151,7 @@ const AppOfTheDayCard  = ({
 			<RNBounceable style={styles.buttonInnerContainer} onPress={onButtonPress}>
 				<Text style={styles.buttonTextStyle}>{buttonText}</Text>
 			</RNBounceable>
-			<Text style={[styles.buttonSubtitleTextStyle, buttonSubtitleTextStyle]}>
+			<Text mt style={[styles.buttonSubtitleTextStyle, buttonSubtitleTextStyle]}>
 				{buttonSubtitle}
 			</Text>
 		</View>
