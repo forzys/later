@@ -5,13 +5,15 @@ import { useFontFace } from "@/hooks/index";
 const RNText = ({
     h1, h2, h3, h4, h5, h6,t4,t3,t5,
     style, left, bold, right, color,
-    center, children, fontFamily,
+    center, children, fontFamily,mt,
     ...rest
 }) => {
     const { fontName = 'Roboto' } = useFontFace()
     return (
         <Text
             style={StyleSheet.flatten([
+                { lineHeight: 24 },
+                mt && {marginTop: -3},
                 color && { color },
                 center && styles.center,
                 right && styles.right,
@@ -101,6 +103,7 @@ const styles =  StyleSheet.create({
     bold: {
         fontWeight: "bold",
     },
+
 });
 
 export default memo(RNText);
