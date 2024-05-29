@@ -40,7 +40,7 @@ const fetcher = {
             return res.json()
         },
 
-    }, 
+    },  
 
     download:(url, config = {})=>{
         return new Promise((resolve, reject)=>{
@@ -84,16 +84,17 @@ const fetcher = {
             })
         }) 
     }, 
-    get: (url, config = {})=>{
+    get: (url, config = {}, progress)=>{
         return new Promise((resolve, reject)=>{
             RNFetchBlob.config({
+                ...config,
                 wifiOnly: configs?.wifiOnly,
                 session: config?.session || 'cache',
                 fileCache: true,
                 appendExt:config?.appendExt,
                 path: config.path ? RNFetchBlob.fs.dirs.DownloadDir+ "/" + config.path : undefined, 
-            }).fetch('GET', url).progress((received, total) => {
-                console.log('progress', received / total)
+            }).fetch('GET', url).progress((received, total) => { 
+                typeof progress === 'function' ? progress(received, total) : console.log('progress', received / total);
             }).then((res) => { 
                 res.session(config?.session || 'cache');
                 const path = res.path()
@@ -104,12 +105,7 @@ const fetcher = {
             })
         }) 
     },
-
-
-    remove:()=>{
-
-    },
-
+   
     html:(url)=>{
         return new Promise((resolve, reject)=>{
             RNFetchBlob.config({
@@ -155,12 +151,12 @@ const fetcher = {
             })
         })
     },
-
+    android: RNFetchBlob.android,
+    remove:(name, path)=>RNFetchBlob.session(name).remove(path),
     removeHTML: () => RNFetchBlob.session('html').dispose(),
     list: ( name = 'html') => RNFetchBlob.session(name).list(),
     session: ( name = 'cache') => RNFetchBlob.session(name).list(),
     file: (path) => RNFetchBlob.fs.readFile(path, 'utf8'),
  }
-
 
  export default fetcher

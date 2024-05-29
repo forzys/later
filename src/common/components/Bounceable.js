@@ -1,6 +1,5 @@
 import { Component } from "react";
 import { Animated, Pressable } from "react-native";
-
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
  
 export default class RNBounceable extends Component {
@@ -29,9 +28,15 @@ export default class RNBounceable extends Component {
                 style={[{ transform: [{ scale: this.state.bounceValue }] }, style]}
                 onPressIn={() => {
                     this.bounceAnimation(bounceEffectIn, bounceVelocityIn, bouncinessIn);
+                    if(this?.props?.onPressIn){
+                        this?.props?.onPressIn();
+                    }
                 }}
                 onPressOut={() => {
                     this.bounceAnimation( bounceEffectOut, bounceVelocityOut, bouncinessOut);
+                    if(this?.props?.onPressOut){
+                        this?.props?.onPressOut();
+                    }
                 }}
                 onPress={onPress}
             >

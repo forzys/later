@@ -2,8 +2,8 @@
 
 
 import { Dimensions, StatusBar, Platform } from 'react-native';
-import RNFetchBlob from 'react-native-blob-util'
-
+import RNFetchBlob from 'react-native-blob-util' 
+ 
 const { height, width } = Dimensions.get('window');
 
 const getStatusBarHeight = () => {
@@ -31,9 +31,6 @@ const getStatusBarHeight = () => {
 }
 
 
-
-
-
 export default class configs { 
 
     static token = 'secret_gjNyaXjh7wLZcFG7BLKFIJTtgtAKlB9r0mkU5rK348o';
@@ -48,10 +45,9 @@ export default class configs {
     static getStatusBarHeight = getStatusBarHeight
 
     static navigate;
-
     // 全局服务
     static server;
-
+ 
     // DocumentDir
     // CacheDir
     // MainBundleDir (Can be used to access files embedded on iOS apps only)
@@ -62,14 +58,10 @@ export default class configs {
     // MovieDir (Android Only)
     // RingtoneDir (Android Only)
     // SDCardDir (0.9.5+ Android Only)
-    static dirs =  RNFetchBlob.fs.dirs
-
-    static session =  RNFetchBlob.session
-    
-    static android =  RNFetchBlob.android
-
-    static wifiOnly = false
- 
+    static dirs =  RNFetchBlob.fs.dirs 
+    static session =  RNFetchBlob.session 
+    static android =  RNFetchBlob.android 
+    static wifiOnly = false 
 }
 
  

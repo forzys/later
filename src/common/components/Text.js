@@ -3,7 +3,7 @@ import { Text, StyleSheet } from 'react-native'
 import { useFontFace } from "@/hooks/index";
  
 const RNText = ({
-    h1, h2, h3, h4, h5, h6,t4,t3,t5,
+    h1, h2, h3, h4, h5, h6,t4,t3,t5,t1,t2,
     style, left, bold, right, color,
     center, children, fontFamily,mt,
     ...rest
@@ -13,7 +13,7 @@ const RNText = ({
         <Text
             style={StyleSheet.flatten([
                 { lineHeight: 24 },
-                mt && {marginTop: -3},
+                mt && { marginTop: -3},
                 color && { color },
                 center && styles.center,
                 right && styles.right,
@@ -25,6 +25,8 @@ const RNText = ({
                 h4 && styles.h4,
                 h5 && styles.h5,
                 h6 && styles.h6,
+                t1 && styles.t,
+                t2 && styles.t,
                 t3 && styles.t3,
                 t4 && styles.t4,
                 t5 && styles.t5,
@@ -69,9 +71,13 @@ const styles =  StyleSheet.create({
         marginLeft: 0,
         marginRight: 0,
     },
+    t:{
+        fontSize: 14,
+        lineHeight: 24,
+    },
     t3:{
         fontSize: 12,
-        lineHeight: 16,
+        lineHeight: 18,
     },
     t4:{
         fontSize: 11,
@@ -79,7 +85,7 @@ const styles =  StyleSheet.create({
     },
     t5:{
         fontSize: 10,
-        lineHeight: 14,
+        lineHeight: 16,
     },
   
     center: {

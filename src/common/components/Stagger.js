@@ -1,11 +1,12 @@
 /**
  * https://github.com/animate-react-native/stagger
  */
-import React from 'react';
+import React from 'react'; 
 import Animated, { FadeInDown, FadeOutDown, ZoomInEasyDown, LinearTransition, runOnJS } from 'react-native-reanimated';
 
 
 export default function Stagger({
+	loading,
 	children,
 	enabled = true,
 	stagger = 50,
@@ -22,9 +23,14 @@ export default function Stagger({
 	onEnterFinished,
 	onExitFinished,
 }) {
+	if (loading) {
+		return (typeof loading === 'function') ? loading() : loading;
+	}
+
 	if (!children) {
 		return null;
 	}
+	
 
 	if (!enabled) {
 		return <Animated.View style={style}>{children}</Animated.View>;
@@ -43,7 +49,7 @@ export default function Stagger({
 						<Animated.View
 							key={child.key || index}
 							layout={LinearTransition}
-							entering={entering().delay(
+							entering={entering ? entering().delay(
 								initialEnteringDelay +
 								(enterDirection === 1
 									? index * stagger
@@ -53,8 +59,8 @@ export default function Stagger({
 								if (finished && isLastEnter && onEnterFinished) {
 									runOnJS(onEnterFinished)();
 								}
-							})}
-							exiting={exiting().delay(
+							}): null}
+							exiting={exiting ? exiting().delay(
 								initialExitingDelay +
 								(exitDirection === 1
 									? index * stagger
@@ -64,7 +70,7 @@ export default function Stagger({
 								if (finished && isLastExit && onExitFinished) {
 									runOnJS(onExitFinished)();
 								}
-							})}
+							}): null}
 							style={child.props.style}
 						>
 							{child}
@@ -75,6 +81,7 @@ export default function Stagger({
 	);
 }
 
+export { FadeInDown, FadeOutDown, ZoomInEasyDown }
 
 /**
  * （列表 元素）进入 离开 时动画效果

@@ -45,7 +45,7 @@ export const auto = {
 
 	numberFormat:(value, locale = 'en-GB', options= {})=>new Intl.NumberFormat(locale, options).format(value),
 
-	dateFormat: (day)=> day ?  dayjs(day) : dayjs(),
+	dateFormat: (day)=> day ? dayjs(day) : dayjs(),
 
 	badge: (count, max = 99) => count > max ? (max + '+') : count,
 }
