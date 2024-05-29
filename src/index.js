@@ -4,30 +4,42 @@ import { NavigationContainer,  } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import { createStackNavigator } from '@react-navigation/native-stack'; 
 import { createStackNavigator,TransitionPresets } from '@react-navigation/stack';
+import { enableFreeze } from "react-native-screens";
+
 // import { BottomFabBar } from 'rn-wave-bottom-bar';
 import Icon from '@/common/components/Icon';
 import configs from '@/common/configs';
 // import { AutoEvent } from '@/common/event'
 import { useReceive } from '@/hooks'
 import HomeScreen from "./pages/home";
-
+ 
 import ReceiveScreen from "./pages/receive";
-import ExpandScreen from "./pages/expand";
-import SocialScreen from "./pages/social";
+ 
 import NotesScreen from "./pages/notes";
-import ModalScreen from "./pages/modal";
-// import CollectionScreen from "./pages/collection";
+import MyScreen from "./pages/my";
+import SocialScreen from "./pages/social";
+import RenderScreen from "./pages/render";
 
+import ModalScreen from "./pages/modals/index"; 
+import MediaScreen from "./pages/media/index"; 
+
+import ExpandsScreen from "./pages/expands/index";
 import FontsScreen from "./pages/expands/fonts";
 import ShortScreen from "./pages/expands/short";
 import ServerScreen from "./pages/expands/server";
+import RSSFeedScreen from "./pages/expands/feeds";
+import SummaryScreen from "./pages/expands/summary";
 
-import FolderScreen from "./pages/second/folder";
-import EditerScreen from "./pages/second/editer";
+import FolderScreen from "./pages/notes/folder";
+import EditerScreen from "./pages/notes/editer";
 
+import RSSXMLScreen from "./pages/feeds/index";
+import RSSRenderScreen from "./pages/feeds/render";
 
 import { useFontFace } from "./hooks";
 
+enableFreeze(true)
+ 
 const { isAndroid } = configs?.devices
 
 const Tab = createBottomTabNavigator();
@@ -132,16 +144,16 @@ const routers = [
 	{ 
 		icon: 'extension',
 		selectedColor: '#325BFA', 
-		name: 'Expand',
+		name: 'Expands',
 		title: '拓展',
-        component: ExpandScreen,
+        component: ExpandsScreen,
 	},
 	{ 
 		icon: 'user',
 		selectedColor: '#325BFA', 
 		name: 'Me',
 		title: '我的',
-        component:  ReceiveScreen,
+        component:  MyScreen,
 	},
 ]
  
@@ -154,6 +166,11 @@ const childrenRouter = [
 	{ name: 'Folder', component: FolderScreen }, 
 	{ name: 'Editer', component: EditerScreen }, 
 	{ name: 'Server', component: ServerScreen }, 
+	{ name: 'Feeds', component: RSSFeedScreen },  
+	{ name: 'Rss', component: RSSXMLScreen },  
+	{ name: 'RssRender', component: RSSRenderScreen },  
+	{ name: 'Summary', component: SummaryScreen },  
+	{ name: 'Media', component: MediaScreen },  
 	// { name: 'Setting', component: SettingScreen },
 	// { name: 'Detail', component: DetailScreen },
 	// { name: 'Search', component: SearchScreen },
@@ -215,24 +232,31 @@ export default memo((props)=>{
 
     
     return (
-        <NavigationContainer ref={c => { if(c) configs.navigation = c }}>
-            <Stack.Navigator 
-				initialRouteName='Pages'
-				// screenOptions={{
-				// 	gestureEnabled: true,
-				// 	...(isAndroid && TransitionPresets.ModalPresentationIOS),
-				// }}
-			>
-                <Stack.Screen name="Pages" component={RoutersHoc(routers)} options={{ headerShown: false }} />
+        <NavigationContainer>
+            <Stack.Navigator initialRouteName='Pages'>
                 <Stack.Screen 
+					name="Pages" 
+					component={RoutersHoc(routers)} 
+					options={{ headerShown: false }} 
+				/>
+                
+				<Stack.Screen 
 					name="Receive" 
-					component={ReceiveScreen} 
+					component={ReceiveScreen}
 					options={{ 
 						gestureEnabled: true,
 						...(isAndroid && TransitionPresets.ModalPresentationIOS),
-						presentation: 'modal', headerShown: false  
-					}} 
+						presentation: 'modal', 
+						headerShown: false,
+					}}
 				/>
+
+				<Stack.Screen
+					name="Render" 
+					component={RenderScreen} 
+					options={{ presentation: 'modal', headerShown: false }} 
+				/>
+
                 <Stack.Screen 
 					name="Modal"
 					component={ModalScreen} 
