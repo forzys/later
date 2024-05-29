@@ -10,7 +10,7 @@ const useStorage = (USER = 'later.default', { dir = RNFetchBlob.fs.dirs.Document
 
     const update = (_user = USER, _savedir = dir)=>{
         if(_user){
-            storage.current = new MMKV({
+            storage.current =  new MMKV({
                 id: _user,
                 path: `${_savedir}/storage`,
                 encryptionKey: security ? 'hunter2' : undefined
@@ -22,7 +22,7 @@ const useStorage = (USER = 'later.default', { dir = RNFetchBlob.fs.dirs.Document
     useEffect(()=>{
         update().then(()=>{
             foceUpdate()
-        })
+        });
     },[])
   
     return [storage.current, update]
