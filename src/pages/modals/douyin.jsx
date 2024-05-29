@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useMemo, useRef } from "react";
 import { View, ScrollView, Image } from "react-native";
 import Text from '@/common/components/Text' 
 import Checkbox from '@/components/Checkbox' 
@@ -6,8 +6,10 @@ import Card, { ButtonCard } from "@/components/Card";
 import Layout from "@/layout/Layout"; 
 import {useUpdate, useReceive} from "@/hooks/index";
 import { assets } from "@/common/common";
+import Sheet from "@/components/Sheet";
 
 const RouteDouyin = memo(({ title, navigation })=>{
+    const sheetRef = useRef(null);
     const { onGetHistory, onSetHistory, historyKey } = useReceive()
     const [state, setState, { cache }] = useUpdate({
         isEdit: false,
@@ -55,20 +57,22 @@ const RouteDouyin = memo(({ title, navigation })=>{
         setState({ selected: {} })
     }
     
+    const onSetting = ()=>{
+        sheetRef.current.open()
+    }
     return (
         <Layout 
             title={title} 
             rightIcon="close" 
-            renderLeft={(<Text>{state?.isEdit ? '取消' : '编辑'}</Text>)} 
-            onLeftPress={()=>setState({ isEdit: !state?.isEdit })}
+            renderLeft={(<Text onPress={()=>setState({ isEdit: !state?.isEdit })}>{state?.isEdit ? '取消' : '编辑'}</Text>)} 
+            
             onRightPress={()=>navigation?.goBack()}
         >
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, padding: 12 }}>
                 {
                     state.isEdit && (
-                        <View style={{ width:'100%', flexDirection:'row', paddingHorizontal:12, gap: 12 }}>
-
-                            <View style={{paddingHorizontal: 12, justifyContent:'center' }}> 
+                        <View style={{ width:'100%', flexDirection:'row', gap: 12 }}> 
+                            <View style={{ paddingHorizontal: 12, justifyContent:'center' }}> 
                                 <Checkbox 
                                     noLine 
                                     size={20} 
@@ -86,11 +90,11 @@ const RouteDouyin = memo(({ title, navigation })=>{
                         </View>
                     )
                 }
-                <ScrollView style={{ width:'100%', flex: 1, paddingHorizontal: 12 }} contentContainerStyle={{ paddingTop: 12, paddingBottom: 24, gap:12, }}>
+                <ScrollView style={{ width:'100%', flex: 1  }} contentContainerStyle={{ paddingTop: 12, paddingBottom: 24, gap:12, }}>
                     {
                         options?.map(item=>{
                             return (
-                                <Card key={item?.key} style={{ width:'100%', flexDirection: 'row'}}>
+                                <Card key={item?.key} style={{ width:'100%', flexDirection: 'row'}} onPress={onSetting}>
                                     {
                                         Boolean(state.isEdit) && (
                                             <Checkbox
@@ -121,6 +125,17 @@ const RouteDouyin = memo(({ title, navigation })=>{
                     }
                 </ScrollView> 
             </View> 
+
+            <Sheet ref={sheetRef} style={{ paddingHorizontal: 12,  backgroundColor: 'transparent'}}>
+                <View style={{ gap: 24, alignSelf:'flex-end',  }}>
+                    <View style={{gap: 12}}>
+                        <ButtonCard style={{width: '100%', alignItems:'center'}}>编辑</ButtonCard>
+                        <ButtonCard style={{width: '100%', alignItems:'center'}}>分享</ButtonCard>
+                        <ButtonCard style={{width: '100%', alignItems:'center'}}>保存</ButtonCard> 
+                    </View>
+                    <ButtonCard color='red' style={{width: '100%', alignItems:'center', }}>删除</ButtonCard>
+                </View>
+            </Sheet>
         </Layout>
     )
 })

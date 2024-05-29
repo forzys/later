@@ -14,7 +14,7 @@ const Fonts = memo(({ navigation })=>{
     const { fonts, onLoadFonts, onUseFonts, fontName, onQueryFonts } = useFontFace();   
   
     return (
-        <Layout>
+        <Layout back>
             <ScrollView  style={{ flex: 1, }} contentContainerStyle={{ paddingVertical: 12, gap: 0, gap:12, alignItems:'center' }}>
                 <View style={{ flexDirection:'row', width: (width * 0.9), justifyContent:'flex-end', gap: 12 }}>
                     <SimpleCard onPress={()=>{ onUseFonts(); }}>

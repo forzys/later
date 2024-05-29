@@ -81,8 +81,7 @@ export default memo(({ navigation, route })=>{
 				selected[key] ? (delete selected[key]) : (selected[key] = true)
 				cache.selected = selected 
 				return setState({ selected }) 
-			}
-			
+			} 
             navigation.navigate('Editer', { name: 'Notes', title: title, key: key  })
         } 
     }
@@ -174,8 +173,7 @@ export default memo(({ navigation, route })=>{
 															</View> 
 
 															<Text t4>{item.time}</Text>
-														</View>
-														
+														</View> 
 													</View>
 
 													{

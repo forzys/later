@@ -6,24 +6,22 @@ import Card from "@/components/Card";
 import Layout from "@/layout/Layout"; 
 import Input from "@/components/Input";
 
-const RouteNotes = memo(({ title,  other, navigation })=>{
+const RouteNotes = memo(({ title, other, navigation })=>{
     const { current } = useRef({
-        content: '新建文件夹',
+        content: other.value || '新建文件夹',
         init: true,
     });
- 
- 
+  
     return (
         <Layout
             title={title}
             renderLeft={(
-                <Text color="#f3ca52">取消</Text>
+                <Text color="#f3ca52" onPress={navigation?.goBack}>取消</Text>
             )}
             renderRight={(
-                <Text color="#f3ca52">完成</Text>
+                <Text color="#f3ca52" onPress={navigation?.goBack}>完成</Text>
             )} 
-            onLeftPress={()=>navigation?.goBack()}
-            onRightPress={()=>navigation?.goBack()}
+           
         >
             <View style={{ padding: 12  }}>
                 {

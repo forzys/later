@@ -1,19 +1,13 @@
 import { memo,useMemo } from "react";
-import { View, Text } from "react-native";
-import Layout from "@/layout/Layout"; 
+
 import DouyinSheet from "@/pages/modals/douyin"; 
 import NotesSheet from "@/pages/modals/notes"; 
+import FeedsSheet from "@/pages/modals/feeds"; 
+import EmptySheet from "@/pages/modals/empty"; 
 
- 
-const RouteEmpty = memo(({ title, navigation })=>{
-    return (
-        <Layout title={title} rightIcon="close" onRightPress={()=>navigation?.goBack()}>
-            <View style={{alignSelf:'center'}}>
-                <Text>Empty</Text>
-            </View>
-        </Layout>
-    )
-})
+import { View, ScrollView, Button } from "react-native";
+import Text from '@/common/components/Text' 
+
 
 export default memo(({ route, navigation  })=>{
     const { title = '', options, name, ...other } = useMemo(()=>{
@@ -26,14 +20,16 @@ export default memo(({ route, navigation  })=>{
                 return DouyinSheet; 
             case 'Notes':
                 return NotesSheet; 
+            case 'Feeds':
+                return FeedsSheet; 
             default:
-                return RouteEmpty;
+                return EmptySheet;
         }
     },[name])
 
     return (
         <RouteSheet
-            name={name}
+            name={name} 
             title={title}
             options={options}
             other={other}

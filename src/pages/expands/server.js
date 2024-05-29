@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { memo, useEffect, useMemo, useRef, useState } from 'react';
 import { View } from 'react-native';
 import { BridgeServer } from 'react-native-http-bridge-refurbished';
 import Layout from '@/layout/Layout';
@@ -6,6 +6,7 @@ import Card, { ButtonCard } from "@/components/Card";
 import QRCode from "@/components/QRCode";
 import Text from "@/common/components/Text";
 import {auto, assets} from "@/common/common";
+import configs from "@/common/configs";
 
 const _html = `
 <html>
@@ -15,14 +16,14 @@ const _html = `
 </html>
 `
 
-
-function Server() {
-    const {current} = useRef({})
+const Server = memo(({ route })=>{
+    const {current} = useRef({
+        allow: true
+    })
     const [start, setStart] = useState(false);
- 
-
+  
     const server = useMemo(()=>{
-        const server = new BridgeServer('http_service', true);
+        const server = configs.server ? configs.server : new BridgeServer('http_service', true);
         server.get('/', async (req, res) => { 
             console.log({ req,  res }) 
             return res.html(_html)
@@ -36,8 +37,6 @@ function Server() {
                 server?.stop();
                 return setStart(false) 
             }
-
-            console.log({  server })
             server.listen(3000);
 
             // const server = new BridgeServer('http_service', true);
@@ -63,39 +62,25 @@ function Server() {
         })
 
         return () => {
-            server?.stop();
+            if(current.allow){
+                server?.stop();
+            }
         };
     }, [server]);
 
     return (
-        <Layout>
-            <View style={{ justifyContent:'center', gap: 12}}>
-
+        <Layout back>
+            <View style={{ padding:12, justifyContent:'center', gap: 12 }}>
                 <ButtonCard 
                     onPress={onStartServer}
                     style={{ width: 60, height:60, alignItems:'center', justifyContent:'center', borderRadius:100}}
                 >
                     { start ? '已启动' : '启动' }
                 </ButtonCard>
-
-                <View style={{ justifyContent:'center', alignItems:'center' }}>
-                    {
-                        current.ip && start && (
-                            <Text color="#bbb">服务已启动， 当前地址 http://{current.ip}:3000</Text>
-                        )
-                    }
-
-                    {
-                        (
-                            <View style={{padding: 12, backgroundColor:'#FFF', borderRadius: 6}}> 
-                                {/* <QRCode 
-                                    size={120} 
-                                    value={`https://github.com/rosskhanas/react-qr-code/issues/237`}
-                                    fgColor="#dd761c"
-                                    logo={{ uri: icon }}
-                                    logoSize={30}
-                                /> */}
-
+                {
+                    server && start && ( 
+                        <View style={{ justifyContent:'center', alignItems:'center' }}> 
+                            <View style={{padding: 12, backgroundColor:'#FFF', borderRadius: 6}}>  
                                 <QRCode
                                     value={"https://github.com/rosskhanas/react-qr-code/issues/237"}
                                     size={120}
@@ -104,20 +89,19 @@ function Server() {
                                     positionRadius={["5%", "1%"]}
                                     errorCorrection="H"
                                     logo={assets.platform.douyin}
-                                />
-
+                                /> 
                             </View>
-                        )
-                    } 
-                </View>
-               
-                {/* {lastCalled === undefined
-                    ? 'Request webserver to change text'
-                    : 'Called at ' + new Date(lastCalled).toLocaleString()} */}
+
+                            <View style={{marginTop: 24}}>
+                                <Text color="#bbb" selectable>服务已启动， 当前地址 http://{current.ip}:3000</Text>
+                            </View> 
+                        </View> 
+                    )
+                }
             </View>
             
         </Layout>
     );
-}
+})
 
 export default Server;
