@@ -22,12 +22,13 @@ const styles = StyleSheet.create({
       position: "absolute",
       top: 0,
       right: 0,
-      width: 60,
-      height: 60,
-      borderTopLeftRadius: 40,
-      borderTopRightRadius: 20,
-      borderBottomLeftRadius: 40,
-      borderBottomRightRadius: 40,
+      width: 40,
+      height: 40,
+      borderRadius: 40,
+      // borderTopLeftRadius: 40,
+      // borderTopRightRadius: 20,
+      // borderBottomLeftRadius: 40,
+      // borderBottomRightRadius: 40,
       alignItems: "center",
       justifyContent: "center",
       backgroundColor: "rgba(255,255,255,0.3)",
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     footerContainerStyle: {
       right: 16,
       bottom: 16,
-      position: "absolute",
+      position: "absolute", 
     },
     footerTextStyle: {
       textAlign: "right",
@@ -70,7 +71,7 @@ const ColorfulCard  = ({
     value,
     contentStyle,
     valuePostfix,
-    iconImageSource,
+    // iconImageSource,
     iconImageStyle,
     footerTitle,
     footerValue,
@@ -81,6 +82,10 @@ const ColorfulCard  = ({
     valuePostfixTextStyle,
     ImageComponent = Image,
     onPress,
+    onLongPress,
+    imageSource, 
+    icon,
+
 }) => {
     const renderTitle = () => (
         <View>
@@ -90,14 +95,19 @@ const ColorfulCard  = ({
 
     const renderIconContainer = () => (
         <View style={[styles.iconContainerStyle, iconContainerStyle]}>
-            <ImageComponent
-                source={iconImageSource}
+          {
+            icon ? icon : imageSource && (
+              <ImageComponent
+                source={imageSource}
                 style={[styles.iconImageStyle, iconImageStyle]}
-            />
+              />
+            )
+          }
+            
         </View>
     );
 
-    const renderContent = () => (
+    const renderContent = () => (value || valuePostfix) && (
         <View style={[styles.contentStyle, contentStyle]}>
             <Text style={[styles.valueTextStyle, valueTextStyle]}>
                 {`${value} `}
@@ -120,7 +130,7 @@ const ColorfulCard  = ({
     );
 
     return (
-        <RNBounceable style={[styles.container, style]} onPress={onPress}>
+        <RNBounceable style={[styles.container, style]} onPress={onPress} onLongPress={onLongPress}>
             {renderTitle()}
             {renderIconContainer()}
             {renderContent()}

@@ -103,17 +103,10 @@ const Image = (props) => {
         <View style={[style.overlay, { backgroundColor: backgroundMaskVideo }]}>
            
           <Icon 
-            style={[
-                style.videoIcon,
-                {
-                    width: size,
-                },
-                videoIconStyle,
-            ]}
+            style={[ style.videoIcon, { width: size },videoIconStyle ]}
             Icon="play"
             color="#FFF"
-          />
-
+          /> 
 
         </View>
       )}
@@ -636,4 +629,6 @@ const style = StyleSheet.create({
       height: 16,
       tintColor: '#fff',
     },
-  }); 
+}); 
+
+export default ImageGrid

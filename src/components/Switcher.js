@@ -1,4 +1,5 @@
  
+import { useState  } from "react";
 import { Text, Animated, TouchableOpacity, StyleSheet  } from "react-native";
 
 export const _buttonContainer = (backgroundColor, alignment) => ({
@@ -43,8 +44,8 @@ const Switcher = ({
     onSecondaryPress,
     ...rest
 }) => {
-    const [activeTab, setActiveTab] = React.useState(0);
-    const [animation, setAnimation] = React.useState(new Animated.Value(1));
+    const [activeTab, setActiveTab] = useState(0);
+    const [animation, setAnimation] = useState(new Animated.Value(1));
     const primaryTextColor = activeTab === 1 ? inactiveTextColor : activeTextColor;
 
     const springAnimation = () => {

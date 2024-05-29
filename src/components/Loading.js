@@ -20,10 +20,8 @@ let webview = undefined
 
 
 const Loading = {
-    show: ({ delay = 1000, text='' } = {}) => {
-  
-        Loading.hidden();
-
+    show: ({ delay = 1000, text='' } = {}) => { 
+        Loading.hidden(); 
         sibling = new RootSiblings(
             <View style={styles.maskStyle}>
                 <View style={styles.backViewStyle}>
@@ -106,7 +104,7 @@ const Loading = {
     },
 
 
-    webview: ({ uri, runJs, runMsg, callback })=>{ 
+    webview: ({ uri, runJs, runMsg, source,  runLoad, callback })=>{ 
         const onClose = (res)=>{
             callback(res)
             Loading.hidden(webview)
@@ -116,8 +114,10 @@ const Loading = {
             <View style={{ width:1, height:1,  position: 'absolute', top: -1, right: -1 }}>
                 <Webviews 
                     uri={uri}
+                    source={source}
                     runJs={runJs}
                     runMsg={runMsg}
+                    runLoad={runLoad}
                     callback={onClose}
                 />
             </View>

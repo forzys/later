@@ -1,7 +1,7 @@
-import React from 'react';
- 
+import React, { forwardRef, useImperativeHandle, useState } from 'react'; 
 import { Animated, Easing, View } from 'react-native';
 import { Svg, Path, G } from 'react-native-svg';
+import Text from '@/common/components/Text'
 
 class CircularProgress extends React.PureComponent {
   polarToCartesian(centerX, centerY, radius, angleInDegrees) {
@@ -229,3 +229,16 @@ AnimatedCircularProgress.defaultProps = {
   useNativeDriver: false,
   delay: 0,
 };
+
+
+export const Received = forwardRef((props, ref)=>{
+  const [progress, setProgress] = useState(props.init || '')
+
+  useImperativeHandle(ref, ()=>({
+    setProgress: (value)=> setProgress(value)
+  }))
+
+  return (
+    <Text style={props.style}>{progress}</Text> 
+  )
+})

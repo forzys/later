@@ -366,8 +366,7 @@ const BottomSheet = forwardRef(
     const _animatedHeight = useAnimatedValue(0); 
     const contentWrapperRef = useRef(null); 
     const cachedContentWrapperNativeTag = useRef(undefined);
-
-
+ 
     const sepStyles = useMemo(() => separatePaddingStyles(contentContainerStyle), [contentContainerStyle]);
  
     const Animators = useMemo(() => ({

@@ -143,10 +143,10 @@ const BouncyCheckbox = (props, ref) => {
 
     const onCheckboxLongPress = useCallback(() => {
         if (!onLongPress) {
-        return;
+            return;
         }
         setChecked(!checked, (newCheckedValue) => {
-        onLongPress && onLongPress(newCheckedValue);
+            onLongPress && onLongPress(newCheckedValue);
         });
     }, [checked, onLongPress, setChecked]);
 
@@ -215,12 +215,12 @@ const styles = StyleSheet.create({
         height: 10,
     },
     textContainer: {
-        marginLeft: 16,
+        marginLeft: 8,
     },
     iconContainer: (size,checked,fillColor,unFillColor) => ({
         width: size,
         height: size,
-        borderRadius: size / 2,
+        borderRadius: 3,
         backgroundColor: checked ? fillColor : unFillColor,
         alignItems: "center",
         justifyContent: "center",
@@ -230,7 +230,7 @@ const styles = StyleSheet.create({
         height: size,
         borderWidth: 1,
         borderColor: fillColor,
-        borderRadius: size / 2,
+        borderRadius: 3,
         alignItems: "center",
         justifyContent: "center",
     }),

@@ -1,7 +1,7 @@
-
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { PanResponder, StyleSheet, Animated, TouchableWithoutFeedback, I18nManager } from 'react-native'
- 
+import RNBounceable from '@/common/components/Bounceable';
+
 function findKey(map, fn) {
   const keys = Object.keys(map)
   for (let i = 0; i < keys.length; i++) {
@@ -33,13 +33,13 @@ function differenceBy(arr1, arr2, key) {
 
 let activeBlockOffset = { x: 0, y: 0 }
 
-const Block = ({ style, dragStartAnimationStyle, onPress, onLongPress, children, panHandlers, delayLongPress, onPressOut }) => {
+const Block = ({ gap = 0, style, disabled, dragStartAnimationStyle, onPress, onLongPress, children, panHandlers, delayLongPress, onPressOut }) => {
     return (
         <Animated.View style={[styles.blockContainer, style, dragStartAnimationStyle]} {...panHandlers}>
             <Animated.View>
-                <TouchableWithoutFeedback delayLongPress={delayLongPress} onPress={onPress} onLongPress={onLongPress} onPressOut={onPressOut}>
+                <RNBounceable style={{ gap: gap }} disabled={disabled} delayLongPress={delayLongPress} onPress={onPress} onLongPress={onLongPress} onPressOut={onPressOut}>
                     {children}
-                </TouchableWithoutFeedback>
+                </RNBounceable>
             </Animated.View>
         </Animated.View>
     )
@@ -47,6 +47,7 @@ const Block = ({ style, dragStartAnimationStyle, onPress, onLongPress, children,
 
 const DraggableGrid = function(props) {
     const [blockPositions] = useState([])
+    const cache = useRef({})
     const [orderMap] = useState({})
     const [itemMap] = useState({})
     const [items] = useState([])
@@ -73,7 +74,7 @@ const DraggableGrid = function(props) {
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onStartShouldSetPanResponderCapture: () => false,
-        onMoveShouldSetPanResponder: () => panResponderCapture,
+        onMoveShouldSetPanResponder: () =>panResponderCapture,
         onMoveShouldSetPanResponderCapture: () => panResponderCapture,
         onShouldBlockNativeResponder: () => false,
         onPanResponderTerminationRequest: () => false,
@@ -103,12 +104,13 @@ const DraggableGrid = function(props) {
         gridHeight.setValue(rowCount * blockHeight)
     }
 
-    function onBlockPress(itemIndex) {
+    function onBlockPress(itemIndex) { 
         props.onItemPress && props.onItemPress(items[itemIndex].itemData)
     }
 
     function onStartDrag(_, gestureState) {
-        const activeItem = getActiveItem()
+        if(!cache.starting) cache.starting = true
+        const activeItem = getActiveItem() 
         if (!activeItem) return false
         props.onDragStart && props.onDragStart(activeItem.itemData)
         const { x0, y0, moveX, moveY } = gestureState
@@ -121,9 +123,9 @@ const DraggableGrid = function(props) {
     }
 
     function onHandMove(_, gestureState) {
-        const activeItem = getActiveItem()
-        if (!activeItem) return false
-        const { moveX:moveXOriginal, moveY } = gestureState
+        const activeItem = getActiveItem() 
+        if (!activeItem) return false 
+        const { moveX: moveXOriginal, moveY } = gestureState
         const moveX = I18nManager.isRTL ? -moveXOriginal : moveXOriginal
         props.onDragging && props.onDragging(gestureState)
 
@@ -161,7 +163,13 @@ const DraggableGrid = function(props) {
 
     function onHandRelease() {
         const activeItem = getActiveItem()
-        if (!activeItem) return false
+
+        if(cache.starting){
+            cache.starting = false
+        }
+        if (!activeItem) { 
+            return false
+        }
         props.onDragRelease && props.onDragRelease(getSortData())
         setPanResponderCapture(false)
         activeItem.currentPosition.flattenOffset()
@@ -225,14 +233,12 @@ const DraggableGrid = function(props) {
     }
 
     function setActiveBlock(itemIndex, item) {
-        if (item.disabledDrag) return 
+        if (item.disabledDrag || item.disabled) return 
         props.onDragItemActive && props.onDragItemActive(item)
         setPanResponderCapture(true)
         setActiveItemIndex(itemIndex)
     }
-
  
-
     function startDragStartAnimation() {
         if (!props.dragStartAnimation) {
             dragStartAnimatedValue.setValue(1)
@@ -330,14 +336,17 @@ const DraggableGrid = function(props) {
     useEffect(() => {
         startDragStartAnimation()
     }, [activeItemIndex])
+
     useEffect(() => {
         if (hadInitBlockSize) {
             initBlockPositions()
         }
     }, [gridLayout])
+
     useEffect(() => {
         resetGridHeight()
     })
+
     if (hadInitBlockSize) {
         diffData()
     }
@@ -346,12 +355,19 @@ const DraggableGrid = function(props) {
         return (
             <Block
                 onPress={onBlockPress.bind(null, itemIndex)}
-                onLongPress={setActiveBlock.bind(null, itemIndex, item.itemData)}
+                onLongPress={setActiveBlock.bind(null, itemIndex, item.itemData)} 
+                onPressOut={()=>{
+                    if(!cache.starting){
+                        onHandRelease()
+                    }
+                }}
                 panHandlers={panResponder.panHandlers}
                 style={getBlockStyle(itemIndex)}
                 dragStartAnimationStyle={getDragStartAnimation(itemIndex)}
                 delayLongPress={props.delayLongPress || 300}
                 key={item.key}
+                disabled={item.itemData?.disabled}
+                gap={props.gap}
             >
                 {props.renderItem(item.itemData, orderMap[item.key].order)}
             </Block>

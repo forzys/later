@@ -17,9 +17,14 @@ class Snackbar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+
             translateValue: new Animated.Value(0),
             hideDistance: 9999,
         };
+    }
+
+    onLayout = (event)=>{ 
+        this.setState({ hideDistance: event.nativeEvent.layout.height }) 
     }
 
     render() {
@@ -55,10 +60,12 @@ class Snackbar extends Component {
                             }),
                         },
                     ]}
-                    onLayout={event => this.setState({ hideDistance: event.nativeEvent.layout.height })}
+                    onLayout={this.onLayout}
                 >
                     {
-                        typeof this.props.message === 'function'
+                        typeof this.props.children !== 'undefined'
+                        ? this.props.children
+                        : typeof this.props.message === 'function'
                         ? this.props.message()
                         : (
                             <Text style={[this.props.messageStyle, styles.textMessage, { color: this.props.messageColor }]}>

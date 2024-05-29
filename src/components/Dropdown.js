@@ -18,14 +18,12 @@ class Menu extends React.Component {
   constructor(props) {
     super(props); 
     this.state = {
-      menuState: States.Hidden,
-
+      menuState: States.Hidden, 
       top: 0,
-      left: 0,
+      left: 0, 
 
       menuWidth: 0,
-      menuHeight: 0,
-
+      menuHeight: 0, 
       buttonWidth: 0,
       buttonHeight: 0,
 
@@ -61,7 +59,7 @@ class Menu extends React.Component {
     // Start menu animation
     onMenuLayout = (e) => {
         if (this.state.menuState === States.Animating) {
-        return;
+         return;
         }
 
         const { width, height } = e.nativeEvent.layout;
@@ -71,18 +69,18 @@ class Menu extends React.Component {
             menuHeight: height,
         },() => {
             Animated.parallel([
-            Animated.timing(this.state.menuSizeAnimation, {
-                toValue: { x: width, y: height },
-                duration: this.props.animationDuration,
-                easing: EASING,
-                useNativeDriver: false,
-            }),
-            Animated.timing(this.state.opacityAnimation, {
-                toValue: 1,
-                duration: this.props.animationDuration,
-                easing: EASING,
-                useNativeDriver: false,
-            }),
+                Animated.timing(this.state.menuSizeAnimation, {
+                    toValue: { x: width, y: height },
+                    duration: this.props.animationDuration,
+                    easing: EASING,
+                    useNativeDriver: false,
+                }),
+                Animated.timing(this.state.opacityAnimation, {
+                    toValue: 1,
+                    duration: this.props.animationDuration,
+                    easing: EASING,
+                    useNativeDriver: false,
+                }),
             ]).start();
         });
     };
@@ -180,37 +178,37 @@ class Menu extends React.Component {
 
         const { testID, anchor, style, children } = this.props;
 
-    return (
-        <View ref={this.setContainerRef} collapsable={false} testID={testID}>
-            {anchor}
+        return (
+            <View ref={this.setContainerRef} collapsable={false} testID={testID}>
+                {anchor}
 
-            <Modal
-                visible={modalVisible}
-                onRequestClose={this.onRequestClose}
-                supportedOrientations={[
-                    'portrait',
-                    'portrait-upside-down',
-                    'landscape',
-                    'landscape-left',
-                    'landscape-right',
-                ]}
-                transparent
-            >
-                <TouchableWithoutFeedback onPress={this.onRequestClose} accessible={false}>
-                    <View style={StyleSheet.absoluteFill}>
-                        <Animated.View
-                            onLayout={this.onMenuLayout}
-                            style={[styles.shadowMenuContainer, shadowMenuContainerStyle, style]}
-                        >
-                            <Animated.View style={[styles.menuContainer, animationStarted && menuSize]}>
-                                {children}
+                <Modal
+                    visible={modalVisible}
+                    onRequestClose={this.onRequestClose}
+                    supportedOrientations={[
+                        'portrait',
+                        'portrait-upside-down',
+                        'landscape',
+                        'landscape-left',
+                        'landscape-right',
+                    ]}
+                    transparent
+                >
+                    <TouchableWithoutFeedback onPress={this.onRequestClose} accessible={false}>
+                        <View style={StyleSheet.absoluteFill}>
+                            <Animated.View
+                                onLayout={this.onMenuLayout}
+                                style={[styles.shadowMenuContainer, shadowMenuContainerStyle, style]}
+                            >
+                                <Animated.View style={[styles.menuContainer, animationStarted && menuSize]}>
+                                    {children}
+                                </Animated.View>
                             </Animated.View>
-                        </Animated.View>
-                    </View>
-                </TouchableWithoutFeedback>
-            </Modal>
-        </View>
-    );
+                        </View>
+                    </TouchableWithoutFeedback>
+                </Modal>
+            </View>
+        );
   }
 }
   

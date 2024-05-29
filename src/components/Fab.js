@@ -59,6 +59,7 @@ export default class FAB extends Component {
         visible: true,
         snackOffset: 0,
         style: {},
+        bottom: 20,
     };
 
     state = {
@@ -68,24 +69,24 @@ export default class FAB extends Component {
 
     componentDidMount() {
         const { translateValue, shiftValue } = this.state;
-        const { visible, snackOffset } = this.props;
+        const { visible, snackOffset, bottom } = this.props;
 
         if (visible) {
             translateValue.setValue(1);
         } else {
-            translateValue.setValue(0);
+            translateValue.setValue(0); 
         }
         if (snackOffset === 0) {
-            shiftValue.setValue(20);
+            shiftValue.setValue(bottom);
         } else {
-            shiftValue.setValue(20 + snackOffset);
+            shiftValue.setValue(bottom + snackOffset);
         }
     }
 
  
     UNSAFE_componentWillReceiveProps(nextProps) {
         const { translateValue, shiftValue } = this.state;
-        const { visible, snackOffset } = this.props;
+        const { visible, snackOffset, bottom } = this.props;
 
         if (nextProps.visible && !visible) {
             Animated.timing(translateValue, {
@@ -106,14 +107,14 @@ export default class FAB extends Component {
             if (nextProps.snackOffset === 0) {
                 Animated.timing(shiftValue,{
                     duration: durationValues.exit,
-                    toValue: 20,
+                    toValue: bottom,
                     easing: moveEasingValues.exit,
                     useNativeDriver: false,
                 }).start(); 
             } else if (nextProps.snackOffset !== 0) {
                 Animated.timing(shiftValue,{
                     duration: durationValues.entry,
-                    toValue: 20 + nextProps.snackOffset,
+                    toValue: bottom + nextProps.snackOffset,
                     easing: moveEasingValues.entry,
                     useNativeDriver: false,
                 }).start();
@@ -123,11 +124,11 @@ export default class FAB extends Component {
 
     render() {
         const { translateValue, shiftValue } = this.state;
-        const { onClickAction, buttonColor, iconTextComponent, iconTextColor, style } = this.props;
+        const { radius, onClickAction, buttonColor, iconTextComponent, iconTextColor, fabStyle, style, size = 62, position, children } = this.props;
 
         const dimensionInterpolate = translateValue.interpolate({
             inputRange: [0, 1],
-            outputRange: [0, 56],
+            outputRange: [0, size / 1.2],
         });
 
         const rotateInterpolate = translateValue.interpolate({
@@ -136,19 +137,21 @@ export default class FAB extends Component {
         });
 
         return (
-            <Animated.View style={[styles.fabContainer, { bottom: shiftValue }]}>
+            <Animated.View style={[styles.fabContainer, size && { width:size, height:size, }, position && { ...position }, radius && {borderRadius: radius },  { bottom: shiftValue }]}>
                 <Animated.View
                     style={[
                         styles.addButton, {
                             height: dimensionInterpolate,
                             width: dimensionInterpolate,
                         },
+                        radius && { borderRadius: radius },  
+                        fabStyle,
                     ]}
                 >
                     <Touchable
                         onPress={onClickAction}
-                        style={[styles.addButtonInnerContainer, style]}
-                        buttonColor={buttonColor}
+                        style={[styles.addButtonInnerContainer, style, radius && { borderRadius: radius }]}
+                        buttonColor={buttonColor} 
                     >
                         <Animated.View
                             style={{
@@ -157,8 +160,8 @@ export default class FAB extends Component {
                                     { rotate: rotateInterpolate },
                                 ],
                             }}
-                        >
-                            {cloneElement(iconTextComponent, {
+                        > 
+                            { children ? children : cloneElement(iconTextComponent, {
                                 style: { fontSize: 24, color: iconTextColor },
                             })}
                         </Animated.View>

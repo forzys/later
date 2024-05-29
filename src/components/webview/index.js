@@ -6,17 +6,18 @@ import { WebView } from 'react-native-webview'
 //     webviewRef.current?.injectJavaScript(`navigator.userAgent = '${desktopUserAgent}';`);
 // };
 
-const webviews = ({ runJs, runMsg, runLoad, uri, callback })=>{
+const webviews = ({ runJs, runMsg, runLoad, uri, source, callback, style = {} })=>{
     // const webviewRef = useRef(null);
     return (
         <WebView 
             // ref={webviewRef}
-            source={{ uri: uri }}
-            style={{ width: 1, height: 1, opacity: 0.99 }}
+            source={uri ? { uri } : source}
+            style={{ width: 1, height: 1, opacity: 0.99 , ...style }}
             injectedJavaScript={runJs}
             onMessage={(event)=>{
-                callback?.(runMsg?.(event) )
+                callback?.(runMsg?.(event))
             }}
+            originWhitelist={['*']}
             onLoadEnd={runLoad}
         />
     )

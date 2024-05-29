@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { VideoPlayer, VideoPlayerProvider } from './controls/video';
 
 export default memo((props)=>{
-    return (
+    return ( 
         <VideoPlayerProvider autoplay={props?.autoplay}> 
             <View style={props.style}>
                 <VideoPlayer

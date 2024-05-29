@@ -128,12 +128,9 @@ export default class InteractiveTextInput extends React.Component{
  
     renderIcon = () => {
         const { 
-            enableIcon,
-            iconImageStyle,
-            iconStyle,
-            iconImageSource,
-            onIconPress,
-            ImageComponent = Image,
+            enableIcon, 
+            iconStyle, 
+            onIconPress, 
             IconComponent = TouchableOpacity,
         } = this.props;
 

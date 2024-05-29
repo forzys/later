@@ -18,7 +18,7 @@ export const WarpCard = memo((props)=>{
 const SimpleCard = memo((props)=>{
     return (
         <WarpCard style={StyleSheet.flatten([props?.disabled ? styles.disabled : styles?.action, props.style])}>
-            <RNBounceable onPress={props?.onPress} disabled={props?.disabled} style={props?.style}>
+            <RNBounceable onLongPress={props?.onLongPress} onPress={props?.onPress} disabled={props?.disabled} style={props?.style}>
                 {props.children}
             </RNBounceable> 
         </WarpCard>
@@ -28,72 +28,11 @@ const SimpleCard = memo((props)=>{
 export const ButtonCard = memo(({ bold = true,  textProps={},  ...props})=>{
     return (
         <SimpleCard onPress={props?.onPress} style={props.style} disabled={props?.disabled}>
-            <Text color={props?.color} bold={bold} mt style={props?.disabled ?styles.disabled : styles?.action} {...textProps}>{props?.text || props?.children}</Text>
+            <Text color={props?.color} bold={bold} mt style={props?.disabled ? styles.disabled : styles?.action} {...textProps}>{props?.text || props?.children}</Text>
         </SimpleCard>
     )
 })
 
-export const CarouselCard = ({ style,  text, source, width, height,  textStyle, ...props}) => {
-    const {  
-        shadowColor, shadowStyle, borderRadius, overlayHeight, shadowPaddingBottom,
-        backgroundColor, borderBottomLeftRadius, borderBottomRightRadius 
-    } = props;
-
-    return (
-        <ImageBackground
-            source={source}
-            borderRadius={borderRadius}
-            style={[
-                {
-                    width,
-                    height,
-                    paddingBottom: shadowPaddingBottom 
-                },
-                shadowStyle || {
-                    shadowColor,
-                    shadowOffset: {
-                        width: 0,
-                        height: 7
-                      },
-                      shadowOpacity: 0.43,
-                      shadowRadius: 9.51
-                },
-                style,
-            ]}
-        >
-            <View 
-                style={[
-                    { bottom: 0, position: "absolute", justifyContent: "center" },
-                    {
-                        width, height:overlayHeight,
-                        backgroundColor,
-                        borderBottomLeftRadius,
-                        borderBottomRightRadius,
-                    }
-                ]}
-            >
-                <Text style={textStyle || styles.textStyle}>{text}</Text>
-            </View>
-        </ImageBackground>
-    );
-};
- 
-CarouselCard.defaultProps = {
-    text: "California Festive 2020",
-    width: 300,
-    height: 300,
-    borderRadius: 16,
-    overlayHeight: 50,
-    shadowColor: "#000",
-    shadowPaddingBottom: 18,
-    borderBottomLeftRadius: 16,
-    borderBottomRightRadius: 16,
-    backgroundColor: "rgba(0,0,0,0.3)",
-    source: {
-        uri:
-          "https://images.unsplash.com/photo-1471306224500-6d0d218be372?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
-      }
-};
 
 // https://github.com/WrathChaos/react-native-apple-card-views
 
@@ -105,8 +44,7 @@ const styles =  StyleSheet.create({
         alignItems:'center', 
         alignSelf:'center', 
         gap: 12, 
-        padding: 12,
-        // paddingHorizontal: 12,
+        padding: 12, 
         borderRadius: 6,  
         backgroundColor:'#FFF', 
     },  
@@ -120,8 +58,8 @@ const styles =  StyleSheet.create({
     }, 
 
     disabled:{
-        opacity: 0.75,
-    }
+        opacity: 0.65, 
+    },
 });
  
 export default SimpleCard

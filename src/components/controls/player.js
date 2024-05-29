@@ -1,5 +1,4 @@
-/* eslint-disable no-undef */
-// import LottieView from 'lottie-react-native';
+ 
 import React, {
   forwardRef,
   useCallback,
@@ -7,21 +6,22 @@ import React, {
   useImperativeHandle,
   useRef,
   useState,
+  memo,
 } from 'react';
+
 import {
-  Dimensions,
-  Image,
+  Dimensions, 
   StatusBar,
   StyleSheet,
   useWindowDimensions,
   View, 
+  Platform, 
+  ActivityIndicator, 
 } from 'react-native';
 
-import { 
-  Slider,
- 
-} from 'react-native-awesome-slider/src/index';
- 
+import Icon from '@/common/components/Icon';
+
+import { Slider } from 'react-native-awesome-slider';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Orientation, { OrientationType } from 'react-native-orientation-locker';
 import Animated, {
@@ -35,30 +35,230 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import Video from 'react-native-video';
-
+import Video from 'react-native-video'; 
 import Text from '@/common/components/Text';
+  
+const Ripple = memo(forwardRef(
+  (
+    {
+      children,
+      containerStyle,
+      duration = 600,
+      backgroundColor = 'rgba(255,255,255,.3)',
+      onAnimationEnd,
+      overflow,
+      style,
+    },
+    ref,
+  ) => {
+    const scale = useSharedValue(0);
+    const centerX = useSharedValue(0);
+    const centerY = useSharedValue(0);
+    const isFinished = useSharedValue(false);
+    const rippleOpacity = useSharedValue(1);
+    const [radius, setRadius] = useState(-1);
 
-import { Ripple } from './components/ripple';
-import { TapControler } from './tap-controler';
-import { palette } from './theme/palette';
-import { bin, isIos, useRefs } from './utils';
-import { VideoLoader } from './video-loading';
-import { formatTime, formatTimeToMins, secondToTime } from './video-utils';
-import Icon from '@/common/components/Icon';
-export const { width, height, scale, fontScale } = Dimensions.get('window');
+    const rStyle = useAnimatedStyle(() => {
+      const translateX = centerX.value - radius;
+      const translateY = centerY.value - radius;
 
-const VIDEO_DEFAULT_HEIGHT = width * (9 / 16);
-const hitSlop = { left: 8, bottom: 8, right: 8, top: 8 };
+      return {
+        opacity: rippleOpacity.value,
+
+        transform: [
+          { translateX },
+          { translateY },
+          {
+            scale: scale.value,
+          },
+        ],
+      };
+    }, [radius]);
+    useImperativeHandle(ref, () => ({
+      onPress: ({ x, y }) => {
+        'worklet';
+
+        centerX.value = x;
+        centerY.value = y;
+
+        rippleOpacity.value = 1;
+        scale.value = 0;
+        scale.value = withTiming(1, { duration }, finised => {
+          if (finised) {
+            isFinished.value = true;
+            scale.value = withTiming(0, { duration: 0 });
+            if (onAnimationEnd) {
+              runOnJS(onAnimationEnd)();
+            }
+          }
+        });
+      },
+    }));
+
+    return (
+      <View
+        onLayout={({
+          nativeEvent: {
+            layout: { width, height },
+          },
+        }) => {
+          setRadius(Math.sqrt(width ** 2 + height ** 2));
+        }}
+        style={[style]}
+        pointerEvents="none">
+        {radius > -1 && (
+          <Animated.View
+            style={[
+              style,
+              containerStyle,
+              { overflow: !overflow ? 'hidden' : 'visible' },
+            ]}>
+            {children}
+            <Animated.View
+              style={[
+                {
+                  backgroundColor,
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: radius * 2,
+                  height: radius * 2,
+                  borderRadius: radius,
+                  zIndex: 1121,
+                },
+                rStyle,
+              ]}
+            />
+          </Animated.View>
+        )}
+      </View>
+    );
+  },
+)) 
+ 
+ 
+const TapControler  = ({ onPress, style, children }) => {
+  const gesture = Gesture.Tap().onEnd((_e, success) => {
+    if (success) {
+      onPress();
+    }
+  });
+
+  return (
+    <GestureDetector gesture={gesture}>
+      <Animated.View hitSlop={{ left: 8, bottom: 4, right: 8, top: 4 }} style={style}>
+        {children}
+      </Animated.View>
+    </GestureDetector>
+  );
+}; 
+
+const normalize = (size) => size; 
+
+const isIos = Platform.OS === 'ios';
+
+const bin = (value) => {
+  'worklet';
+  return value ? 1 : 0;
+};
+
+const useRefs = () => {
+  const rippleLeft = useRef(null);
+  const rippleRight = useRef(null); 
+  return {
+    rippleLeft,
+    rippleRight,
+  };
+}; 
+ 
+ 
+const palette = {
+  transparent: `rgba(0,0,0,0)`,
+  Main: (opacity = 1) => `rgba(234, 51, 35, ${opacity})`,
+  ActiveMain: (opacity = 1) => `rgba(41, 142, 136, ${opacity})`,
+  Danger: (opacity = 1) => `rgba(255, 61, 74, ${opacity})`,
+  Warning: (opacity = 1) => `rgba(255, 187, 0, ${opacity})`,
+  Info: (opacity = 1) => `rgba(0, 99, 247, ${opacity})`,
+  Success: (opacity = 1) => `rgba(1, 208, 134, ${opacity})`,
+  W: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+  G1: (opacity = 1) => `rgba(245, 247, 250, ${opacity})`,
+  G2: (opacity = 1) => `rgba(225, 227, 229, ${opacity})`,
+  G3: (opacity = 1) => `rgba(195, 197, 199, ${opacity})`,
+  G4: (opacity = 1) => `rgba(157, 159, 163, ${opacity})`,
+  G5: (opacity = 1) => `rgba(108, 110, 112, ${opacity})`,
+  G6: (opacity = 1) => `rgba(39, 41, 46, ${opacity})`,
+  G7: (opacity = 1) => `rgba(44, 45, 47, ${opacity})`,
+  G8: (opacity = 1) => `rgba(23, 26, 31, ${opacity})`,
+  B: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+}; 
+
+const VideoLoader = memo(function VideoLoader({ loading }) {
+  if (!loading) return null;
+  return (
+    <View style={loaderStyle.container}>
+      <ActivityIndicator size="large" color="white" />
+    </View>
+  );
+});
+
+const loaderStyle = StyleSheet.create({
+  container: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...StyleSheet.absoluteFillObject,
+  },
+}); 
+ 
+function padStart(string, length, chars) {
+  const strLength = length ? String(string).length : 0; 
+  return length && strLength < length ?  String(string).padStart(length, chars) : string || '';
+ 
+}
+ 
+const formatTime = ({ time = 0, symbol = '', duration = 0, showHours = false }) => {
+  time = Math.min(Math.max(time, 0), duration);
+
+  if (!showHours) {
+    const formattedMinutes = padStart(Math.floor(time / 60).toFixed(0), 2, '0');
+    const formattedSeconds = padStart(Math.floor(time % 60).toFixed(0), 2, '0');
+
+    return `${symbol}${formattedMinutes}:${formattedSeconds}`;
+  }
+
+  const formattedHours = padStart(Math.floor(time / 3600).toFixed(0), 2, '0');
+  const formattedMinutes = padStart((Math.floor(time / 60) % 60).toFixed(0), 2, '0');
+  const formattedSeconds = padStart(Math.floor(time % 60).toFixed(0), 2, '0');
+
+  return `${symbol}${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+};
+
+const secondToTime = (seconds) => {
+  const hour = Math.floor(seconds / 3600);
+  const residualFromHour = seconds % 3600;
+  const minute = `${Math.floor(residualFromHour / 60)}`.padStart(2, '0');
+  const second = `${Math.floor(residualFromHour % 60)}`.padStart(2, '0');
+  let output = `${minute}:${second}`;
+  hour && (output = `${hour}:${output}`);
+  return output;
+};
+
+const formatTimeToMins = (duration) => {
+  const formattedMinutes = padStart( (Math.floor(duration / 60) % 60).toFixed(0), 2, '0');
+  const formattedSeconds = padStart( Math.floor(duration % 60).toFixed(0), 2,'0');
+
+  return `${formattedMinutes}:${formattedSeconds}`;
+};
+ 
+ 
+const { width, height, scale, fontScale } = Dimensions.get('window');
+
+const VIDEO_DEFAULT_HEIGHT = width * (9 / 16); 
 
 const controlAnimteConfig = {
   duration: 200,
 };
-
-// const AnimatedLottieView = Animated.createAnimatedComponent(LottieView);
-
  
-export const clamp = ( value, lowerBound, upperBound) => {
+const clamp = ( value, lowerBound, upperBound) => {
     'worklet';
     return Math.min(Math.max(lowerBound, value), upperBound);
 };
@@ -111,7 +311,12 @@ const VideoPlayer = forwardRef(
     },
     ref,
   ) => {
-  
+   
+
+    const videoPlayer = useRef(null);
+    const mounted = useRef(false);
+    const isSeeking = useRef(false);
+
 
     const insets = useSafeAreaInsets();
     const insetsRef = useRef(insets);
@@ -130,6 +335,8 @@ const VideoPlayer = forwardRef(
     const [loading, setIsLoading] = useState(false);
     const [showTimeRemaining, setShowTimeRemaining] = useState(true);
     const [allowAutoPlayVideo, setAllowAutoPlayVideo] = useState(autoPlay);
+
+   
 
     useImperativeHandle(ref, () => ({
       setPlay: () => {
@@ -154,8 +361,9 @@ const VideoPlayer = forwardRef(
       },
     }));
   
-    const videoPlayer = useRef(null);
-    const mounted = useRef(false);
+
+
+
     const autoPlayAnimation = useSharedValue(autoPlay ? 1 : 0);
     const { rippleLeft, rippleRight } = useRefs();
    
@@ -174,7 +382,7 @@ const VideoPlayer = forwardRef(
     const max = useSharedValue(100);
     const min = useSharedValue(0);
     const isScrubbing = useSharedValue(false);
-    const isSeeking = useRef(false);
+
     const progress = useSharedValue(0);
     const defaultVideoStyle = useAnimatedStyle(() => {
       return {
@@ -629,10 +837,11 @@ const VideoPlayer = forwardRef(
           {renderMore ? (
             renderMore()
           ) : (
-            <Image
-              source={require('./assets/more_24.png')}
-              style={styles.more}
-            />
+            // <Image
+            //   source={require('./assets/more_24.png')}
+            //   style={styles.more}
+            // />
+            <Icon icon="more" size={22}  style={styles.more} />
           )}
         </TapControler>
       ),
@@ -654,10 +863,11 @@ const VideoPlayer = forwardRef(
           {renderBackIcon ? (
             renderBackIcon()
           ) : (
-            <Image
-              source={require('./assets/right_16.png')}
-              style={styles.back}
-            />
+            <Icon icon="chevron-left" size={22}  style={styles.back} />
+            // <Image
+            //   source={require('./assets/right_16.png')}
+            //   style={styles.back}
+            // />
           )}
         </TapControler>
       ),
@@ -670,10 +880,11 @@ const VideoPlayer = forwardRef(
           {renderFullScreenBackIcon ? (
             renderFullScreenBackIcon()
           ) : (
-            <Image
-              source={require('./assets/right_16.png')}
-              style={styles.back}
-            />
+            <Icon icon="more" size={22} style={styles.back} />
+            // <Image
+            //   source={require('./assets/right_16.png')}
+            //   style={styles.back}
+            // />
           )}
         </TapControler>
       ),
@@ -710,6 +921,7 @@ const VideoPlayer = forwardRef(
           translucent
           backgroundColor={'#000'}
         />
+
         <GestureDetector gesture={gesture}>
           <Animated.View style={[styles.container, videoStyle, style]}>
             <Video
@@ -731,7 +943,7 @@ const VideoPlayer = forwardRef(
             <Animated.View style={StyleSheet.absoluteFillObject}>
               <Animated.View style={[styles.controlView, controlViewStyles]}>
                 <Animated.View
-                  hitSlop={hitSlop}
+                  hitSlop={{ left: 8, bottom: 8, right: 8, top: 8 }}
                   style={[
                     controlStyle.group,
                     styles.topControls,
@@ -871,7 +1083,8 @@ const VideoPlayer = forwardRef(
                   </Animated.View>
                 </Animated.View>
               </Animated.View>
-              <Ripple
+              
+              {/* <Ripple
                 ref={rippleLeft}
                 onAnimationEnd={() => {
                   doubleLeftOpacity.value = 0;
@@ -900,7 +1113,9 @@ const VideoPlayer = forwardRef(
                   <Icon icon="backward" size={25} color="#FFF" />
                   <Text center color={palette.W(1)}>10s</Text>
                 </Animated.View>
-              </Ripple>
+              </Ripple> */}
+
+
               <Animated.View style={[styles.slider, bottomSliderStyle]}>
                 {duration > 0 && (
                   <Slider

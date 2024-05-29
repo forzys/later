@@ -125,3 +125,21 @@ const styles = StyleSheet.create({
 });
 
 export default PickerModal;
+
+/***
+ * github https://github.com/WrathChaos/react-native-picker-modal/tree/master
+ * <PickerModal
+    title="You can either take a picture or select one from your album."
+    isVisible={isVisible}
+    data={["Take a photo", "Select from album"]}
+    onPress={(selectedItem: string, index: number) => {
+      console.log({ selectedItem, index });
+    }}
+    onCancelPress={() => {
+      setVisible(false);
+    }}
+    onBackdropPress={() => {
+      setVisible(false);
+    }}
+  />
+ */
