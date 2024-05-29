@@ -24,6 +24,6 @@
 - [react-native-bigheads](https://github.com/felipecespedes/react-native-bigheads)
 <!-- webview -->
 - [react-native-webview](https://github.com/react-native-webview/react-native-webview)
-
+    <!-- "@forzys/react-native-selectable-text": "github:forzys/react-native-selectable-text", -->
 
 
