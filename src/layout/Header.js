@@ -88,7 +88,7 @@ export const AppleHeader = ({ style, dateTitleTextStyle, largeTitleTextStyle, on
   );
 };
 
-const SidedComponent = ({ style, icon, color = "rgba(0,0,0,0.45)", size = 18, TouchableComponent = Bounceable, customComponent, onPress }) => {
+const SidedComponent = ({ style, icon, text, color = "rgba(0,0,0,0.45)", size = 18, TouchableComponent = Bounceable, customComponent, onPress }) => {
     const hitSlop = {
         top: 8,
         left: 8,
@@ -96,13 +96,20 @@ const SidedComponent = ({ style, icon, color = "rgba(0,0,0,0.45)", size = 18, To
         bottom: 8,
     }; 
 
-    return (
+    return customComponent ? (
+      <View style={style}>
+        {customComponent}
+      </View>
+    ) : (
         <TouchableComponent
             style={style}
             hitSlop={hitSlop}
             onPress={onPress}
         >
-          {customComponent || (<Icon icon={icon} size={size} color={color} />)}
+          <Icon icon={icon} size={size} color={color} />
+          {
+            text && <Text>{text}</Text>
+          } 
         </TouchableComponent>
     );
 };
@@ -113,6 +120,7 @@ export const AppBar =  ({
     leftIcon,
     leftSize,
     leftColor,
+    leftText,
     leftComponentStyle,
     leftComponentDisable,
     leftCustomComponent,
@@ -141,6 +149,7 @@ export const AppBar =  ({
                   customComponent={leftCustomComponent} 
                   onPress={onLeftPress}
                   icon={leftIcon}
+                  text={leftText}
                   color={leftColor}
                   size={leftSize}
                   {...rest}
@@ -148,7 +157,7 @@ export const AppBar =  ({
               ) : null
         }
 
-        <Text style={[{ fontSize: 20, fontWeight: "800", }, titleTextStyle]}>
+        <Text numberOfLines={1} style={[{ maxWidth: (width - 24 * 2), fontSize: 20, fontWeight: "800", }, titleTextStyle]}>
             {title}
         </Text>
 
@@ -277,7 +286,7 @@ const styles = StyleSheet.create({
 
     appbar_container: {
         top: 0,
-        height: 64,
+        height: 56,
         width: "100%",
         backgroundColor: "#fff",
         flexDirection: "row",
@@ -285,12 +294,16 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
     leftComponentStyle: {
-        left: 16,
+        left: 8,
         position: "absolute",
+        flexDirection: "row",
+        alignItems: "center",
     },
     rightComponentStyle: {
         right: 16,
         position: "absolute",
+        flexDirection: "row",
+        alignItems: "center",
     },
 })
 
