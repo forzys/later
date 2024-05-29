@@ -7,7 +7,6 @@ import { useStorage } from '@/hooks/index'
 // import configs from "@/common/configs";
 // import Loading from '@/components/Loading';
 
- 
 export default memo((props)=>{
     const {current} = useRef({ 
         today: auto.dateFormat().format('YYYYMMDD'),
@@ -15,22 +14,17 @@ export default memo((props)=>{
     const [storage] = useStorage('later.config')
     const [init] = useState({
         property: 'File',
-        files: {
-            is_not_empty: true
-        }
+        files: { is_not_empty: true }
     })
     const [fonts, setFonts] = useState([])
     const [fontName, setFontName] = useState('Roboto')
 
     const query = (filter)=>{
-        return fetcher.notion.post('4e5c1f3f548e4015b8182946d684c8e5/query', { 
-            filter: filter
-        }).then((res)=>{
+        return fetcher.notion.post('4e5c1f3f548e4015b8182946d684c8e5/query', { filter: filter }).then((res)=>{
             const fontPaths = {}
             const fontFile = res.results?.map((obj)=>{
                 const { FontName, Preview, FileSize, File }= obj?.properties;
-                fontPaths[FontName.title[0]?.plain_text] = File?.files[0]?.file?.url
-           
+                fontPaths[FontName.title[0]?.plain_text] = File?.files[0]?.file?.url;
                 return {
                     Preview: Preview?.url,
                     FontName: FontName?.title[0]?.plain_text, 
@@ -49,15 +43,13 @@ export default memo((props)=>{
             const nameMap = localFont?.reduce((summ, item)=>{
                 summ[item.FontName] = true
                 return summ
-            }, {})
-
-            const filterFont = fontFile?.filter(item=> !nameMap[item.FontName])
+            }, {});
+            const filterFont = fontFile?.filter(item=> !nameMap[item.FontName]);
 
             if(filterFont?.length){
                 localFont?.unshift(...filterFont)
                 storage.set('fonts', JSON.stringify(localFont))
             }
-  
             setFonts(localFont)
             storage.set('fontsLastUpdate', current?.today)
         });
@@ -75,7 +67,6 @@ export default memo((props)=>{
             setFonts(localFont)
         } 
     }
-
 
     const onSetFont = (name)=>{
         if(name){ 
@@ -135,13 +126,11 @@ export default memo((props)=>{
             current.loading = true
             const name = storage?.getString('fontsName')
             name && onSetFont(name);
-
             runing();
         } 
-    },[storage])
-    
+    },[storage]);
 
-    console.log({ len: fonts.length, session: fetcher.session('fonts') });
+    // console.log({ len: fonts.length, session: fetcher.session('fonts') });
 
     return (
         <FontFaceContext.Provider value={{ onQueryFonts, onLoadFonts, onUseFonts, fontName, fonts  }}>

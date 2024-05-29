@@ -1,23 +1,12 @@
-import { useState, useEffect, memo, useRef } from "react";
- 
+import { useState, memo, useRef, useMemo } from "react";
 import { auto } from "@/common/common";
 import { ReceiveContext } from '@/hooks/context'
 import { useStorage } from '@/hooks/index'
 
 
-
-
-
-
 export default memo((props)=>{
-    const [initFolder] = useState([
-        { name: '全部', icon: 'folder', count: 0 },
-        { name: '共享文件夹', icon: 'folder-share', count: 0 },
-        { name: '媒体文件夹', icon: 'folder-video', count: 0 },
-        { name: '私密文件夹', icon: 'folder-lock',count: 0 },
-        { name: '最近删除', icon: 'delete', count: 0 }, 
-    ]);
     const { current: cache } = useRef({});
+    const { current: gCache } = useRef({});
     const [notes] = useStorage('later.notes')
     const [history] = useStorage('later.history', { security: false });
 
@@ -28,7 +17,15 @@ export default memo((props)=>{
         notesKey: auto.uuid(),
     });
 
-
+    const initFolder = useMemo(()=>{
+        return [
+            { name: '全部', icon: 'folder', count: 0 },
+            { name: '共享文件夹', icon: 'folder-share', count: 0 },
+            { name: '媒体文件夹', icon: 'folder-video', count: 0 },
+            { name: '私密文件夹', icon: 'folder-lock',count: 0 },
+            { name: '最近删除', icon: 'delete', count: 0 }, 
+        ]
+    },[])
 
     const onUpdate = (key)=>{
         setState({ 
@@ -78,6 +75,10 @@ export default memo((props)=>{
         return cache[key]
     }
 
+    const onCache = (key, value)=>{ 
+        gCache[key] = value
+    }
+
     return (
         <ReceiveContext.Provider 
             value={{ 
@@ -86,6 +87,9 @@ export default memo((props)=>{
                 onGetHistory, onSetHistory,
                 onDeleteNoteItem,
                 ...config,
+                
+                onCache,
+                cache: gCache,
             }}
         >
             {props.children}
