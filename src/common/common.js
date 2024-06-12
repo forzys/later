@@ -1,9 +1,11 @@
 import dayjs from "dayjs";
-import getIp from './lib/getIpAddress'
+import myModules from './lib/getModules'
 
  
 export const auto = {
-	getIp: getIp,
+	getIp: myModules.getIp,
+	getWifi: myModules.getWifi,
+
 	try: (fun, init)=>{ 
 		try{ 
 			return fun() 

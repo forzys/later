@@ -728,8 +728,7 @@ function BitByte(data) {
 	this.data = data;
 }
 
-BitByte.prototype = {
-
+BitByte.prototype = { 
 	getLength : function(buffer) {
 		return this.data.length;
 	},
