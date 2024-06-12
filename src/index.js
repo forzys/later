@@ -8,8 +8,7 @@ import { enableFreeze } from "react-native-screens";
 
 // import { BottomFabBar } from 'rn-wave-bottom-bar';
 import Icon from '@/common/components/Icon';
-import configs from '@/common/configs';
-// import { AutoEvent } from '@/common/event'
+import configs from '@/common/configs'; 
 import { useReceive } from '@/hooks'
 import HomeScreen from "./pages/home";
  
@@ -29,6 +28,8 @@ import ShortScreen from "./pages/expands/short";
 import ServerScreen from "./pages/expands/server";
 import RSSFeedScreen from "./pages/expands/feeds";
 import SummaryScreen from "./pages/expands/summary";
+import QrcodeScreen from "./pages/expands/qrcode";
+import SleepScreen from "./pages/expands/sleep";
 
 import FolderScreen from "./pages/notes/folder";
 import EditerScreen from "./pages/notes/editer";
@@ -118,16 +119,14 @@ const RoutersHoc = (routers)=>{
 
 // 屏幕路由
 const routers = [
-	{
-		// icon: 'home-outline' ,
+	{ 
 		icon: 'coffee-alt',
 		selectedColor: '#325BFA', 
 		name: 'Home',
 		title: '稍候',
 		component: HomeScreen,
 	},
-	{
-		// icon: 'clipboard-check-outline' ,
+	{ 
 		icon: 'server',
 		selectedColor: '#325BFA', 
 		name: 'Notes',
@@ -158,9 +157,7 @@ const routers = [
 ]
  
 // 二级页面路由
-const childrenRouter = [
-	// { name: 'Fonts', component: FontsScreen }, 
-	// { name: 'Notes', component: NotesScreen }, 
+const childrenRouter = [ 
 	{ name: 'Fonts', component: FontsScreen }, 
 	{ name: 'Short', component: ShortScreen }, 
 	{ name: 'Folder', component: FolderScreen }, 
@@ -171,19 +168,8 @@ const childrenRouter = [
 	{ name: 'RssRender', component: RSSRenderScreen },  
 	{ name: 'Summary', component: SummaryScreen },  
 	{ name: 'Media', component: MediaScreen },  
-	// { name: 'Setting', component: SettingScreen },
-	// { name: 'Detail', component: DetailScreen },
-	// { name: 'Search', component: SearchScreen },
-	// { name: 'Verify', component: VerifyScreen }, 
-	// { name: 'Bill', component: BillScreen }, 
-	// { name: 'Results', component: ResultsScreen }, 
-	// { name: 'Activity', component: ActivityScreen }, 
-	// { name: 'Orders', component: OrderScreen }, 
-	// { name: 'Form', component: FormScreen },
-	// { name: 'Social', component: SocialScreen },
-	// { name: 'Bank', component: BankScreen }, 
-	// { name: 'RePost', component: RePostScreen }, 
-	// { name: 'Chats', component: ChatsScreen }, 
+	{ name: 'Qrcode', component: QrcodeScreen },   
+	{ name: 'Sleep', component: SleepScreen },   
 ]
 
 
@@ -221,12 +207,9 @@ export default memo((props)=>{
 		const appstater = AppState.addEventListener('change', appState);
 		const schemeser = Linking.addEventListener('url', schemes);
 
-		return () => {
-			// app State remove
-			appstater.remove();
-			// deep link remove
-			schemeser.remove()
-			// Linking.removeAllListeners()
+		return () => { 
+			appstater.remove(); 
+			schemeser.remove() 
 		};
 	},[]);
 

@@ -18,8 +18,54 @@ export default memo((props)=>{
     const { current } = useRef({})
     const [storage] = useStorage('later.config')
     const [timeLine, setTimeLine] = useState([]);
+    const [sleeps, setSleeps] = useState([]);
     const [visible, setVisible] = useState(false);
+ 
+    const onGetSleeps = ()=>{ 
+        const colors = [ 
+            '#748b85',
+            '#5b716c',
+            '#475a55',
 
+            '#32cd9f',
+            '#15b48a',
+            '#099270',
+
+            '#3297ae',
+            '#2b778f',
+        ]
+      
+        fetcher.notion.post('5f4776a24dd54afdb4b6d5c3dde1ef47/query').then(res=>{
+            const properties = res.results?.map((obj)=>{
+                const { Name, CName, Tags, File }= obj?.properties; 
+ 
+                return {
+                    name: Name?.title[0]?.plain_text, 
+                    cname:CName?.rich_text[0]?.plain_text, 
+                    tag: Tags?.multi_select[0]?.name,
+                    uri: File?.files[0]?.file?.url,
+                }
+            }); 
+
+            const objTags = properties.reduce((summ, item)=>{
+                const aTag = summ[item.tag] || [] 
+                aTag.push( item ) 
+                summ[item.tag] = aTag 
+                return summ
+            },{})
+
+            const sleeps = Object.keys(objTags)?.map((key, index)=>{
+                return {
+                    title: key,
+                    color: colors[index],
+                    data:  objTags[key]
+                }
+            })
+ 
+            setSleeps(sleeps);
+        })
+    }
+  
     const onGetTimeLine = (local)=> {
         const version = storage?.getNumber('version') || 0
         current.version = version;
@@ -27,8 +73,7 @@ export default memo((props)=>{
         fetcher.notion.post('956ca90f68dd46a8996070e67ef76521/query').then(res=>{
             const timeline = res.results?.map((obj)=>{
                 const { Name, Tags, Info, Apk, Allow, Version }= obj?.properties;
-
-       
+ 
                 const result = {
                     version: Version.number,
                     name: Name?.title[0]?.plain_text,
@@ -61,7 +106,6 @@ export default memo((props)=>{
         if(current.isDownLoad){
             return
         }
-
         current.isDownLoad = true
         // fetcher.remove('cache', `com.later.version-${version}.apk`);
         fetcher.get(apk, { 
@@ -77,29 +121,80 @@ export default memo((props)=>{
             }
         }, (received, total)=>{
             progressRef?.current?.setProgress(Math.floor((received / total) * 100 * 10) / 10 + '%');  
-        }).then((ext)=>{  
- 
+        }).then((ext)=>{
             current.isDownLoad = false;
             setVisible(false)
-            fetcher.android.actionViewIntent(ext.path, 'application/vnd.android.package-archive'); 
+            fetcher.android.actionViewIntent(ext.path, 'application/vnd.android.package-archive');
+
+ 
         }).catch(e=>{
             console.log({ e })
         })
     }
 
 
+
+
+
+    // const getRemoteRun = (key, path)=>{
+    // }
+    // const getLocalRun = (info)=>{
+    // }
+
+    // const getConfig = ()=>{
+
+    //     fetcher.notion.post('956ca90f68dd46a8996070e67ef76521/query').then(res=>{
+  
+    //         for(let item of res.results){
+    //             const { Name, Time, Version, Path }= item?.properties;
+                
+    //             const name =  Name?.title[0]?.plain_text
+    //             const path =  Path?.rich_text[0]?.plain_text
+    //             const time = Time.date.start 
+    //             const key = name + 'LastUpdate'
+    //             const local = storage.getString(key)
+
+ 
+    //             console.log({ key, time })
+    //             if(local !== time){
+    //                 // storage.set(key, time)
+    //                 getRemoteRun(key, path)
+
+    //             }else{
+    //                 getLocalRun(key); 
+
+    //             }
+    //             // const result = {
+    //             //     time: Time.date.start,
+    //             //     name: Name?.title[0]?.plain_text,
+    //             //     Version: Version.number,
+    //             //     path: Path?.rich_text[0]?.plain_text, 
+    //             // }
+    //         }
+ 
+    //         // getRemoteRun(setting)
+
+    //     }) 
+
+    // }
+
     useEffect(()=>{
         if(storage && !current.loading){
             current.loading = true
             const localTimeLine = auto.jsonFormat(storage?.getString('timeline'), [])
-            onGetTimeLine(localTimeLine)
-        }
-    },[storage]) 
+            onGetTimeLine(localTimeLine) 
+            onGetSleeps()
+        } 
+    },[storage])
+
+
+   
 
     return (
         <AuthContext.Provider 
             value={{
                 timeLine,
+                sleeps,
                 version: current.version,
             }}
         >
@@ -118,16 +213,15 @@ export default memo((props)=>{
                             <Icon icon="circle-close" size={28}  style={{ color:'#DBB5B5' }} onPress={()=> setVisible(false)} />
                         </View>
                     ) 
-                }
-                
+                } 
                 {
                     current?.updated && (
                         <WarpCard style={{ flexDirection:'column', width: '100%', paddingTop: 48, paddingBottom: 12 }}> 
                             <Text h4>发现新版本 <Text t2>{current?.updated?.name}</Text></Text> 
-                            <Text>{current?.updated?.info}</Text>
+                            <Text style={{ width:'100%', paddingHorizontal: 24 }}>{current?.updated?.info}</Text>
                             {
                                 !!current?.updated?.apk && (
-                                    <View style={{ flexDirection:'row', gap: 24,alignItems:'center', alignSelf:'flex-end', }}>
+                                    <View style={{  flexDirection:'row', gap: 24,alignItems:'center', alignSelf:'flex-end', }}>
                                         <Received ref={progressRef} />
                                         <ButtonCard onPress={onDownLoad} textProps={{ style: { fontSize: 12 } }} style={{  padding: 6, backgroundColor: '#DBB5B5' }}>
                                             下载
