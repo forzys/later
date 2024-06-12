@@ -23,8 +23,10 @@ const Expand = memo(({ navigation })=>{
             { name:'Server', key:'server', title: 'HTTP服务器' },
             { name:'Feeds', key:'feeds', title: 'RSS订阅' },
             { name:'Summary', key:'summary', title: '每日摘要' },
+            { name:'Qrcode', key:'qrcode', title: 'WIFI 二维码' },
+            { name:'Sleep', key:'sleep', title: '小睡眠'  },
             { name:'Countdown', key:'countdown', title: '人生倒计时', disabled: true },
-            { name:'Sleep', key:'sleep', title: '小睡眠', disabled: true },
+    
         ]
     });
     const [state, setState] = useUpdate({

@@ -64,8 +64,7 @@ const RouteDouyin = memo(({ title, navigation })=>{
         <Layout 
             title={title} 
             rightIcon="close" 
-            renderLeft={(<Text onPress={()=>setState({ isEdit: !state?.isEdit })}>{state?.isEdit ? '取消' : '编辑'}</Text>)} 
-            
+            renderLeft={(<Text onPress={()=>setState({ isEdit: !state?.isEdit })}>{state?.isEdit ? '取消' : '编辑'}</Text>)}
             onRightPress={()=>navigation?.goBack()}
         >
             <View style={{ flex: 1, padding: 12 }}>

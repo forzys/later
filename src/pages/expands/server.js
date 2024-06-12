@@ -37,17 +37,7 @@ const Server = memo(({ route })=>{
                 server?.stop();
                 return setStart(false) 
             }
-            server.listen(3000);
-
-            // const server = new BridgeServer('http_service', true);
-            // server.get('/', async (req, res) => { 
-            //     console.log({ req,  res }) 
-            //     return res.html(_html)
-            // });
-            // server.listen(3000);
-            // // http://10.0.2.16:3000 
-            // current.server = server
- 
+            server.listen(3000); 
             setStart(true) 
         }catch(e){
             console.log({e})
@@ -59,6 +49,13 @@ const Server = memo(({ route })=>{
 
         auto.getIp().then((ip)=>{
             current.ip = ip
+        })
+
+        auto.getWifi().then((wifi)=>{
+            current.wifi = wifi
+            console.log({ wifi })
+        }).catch(e=>{
+            console.log({ e })
         })
 
         return () => {
@@ -97,7 +94,7 @@ const Server = memo(({ route })=>{
                             </View> 
                         </View> 
                     )
-                }
+                } 
             </View>
             
         </Layout>

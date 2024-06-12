@@ -4,6 +4,7 @@ import DouyinSheet from "@/pages/modals/douyin";
 import NotesSheet from "@/pages/modals/notes"; 
 import FeedsSheet from "@/pages/modals/feeds"; 
 import EmptySheet from "@/pages/modals/empty"; 
+import QrcodeSheet from "@/pages/modals/qrcode"; 
 
 import { View, ScrollView, Button } from "react-native";
 import Text from '@/common/components/Text' 
@@ -22,6 +23,8 @@ export default memo(({ route, navigation  })=>{
                 return NotesSheet; 
             case 'Feeds':
                 return FeedsSheet; 
+            case 'Qrcode':
+                return QrcodeSheet; 
             default:
                 return EmptySheet;
         }

@@ -1,7 +1,7 @@
 import React, { memo, useRef, useEffect, useMemo } from 'react';
 import { ScrollView, View , ActivityIndicator, Pressable, Image, Alert } from 'react-native'; 
 import Layout from '@/layout/Layout';
-import Card, { WarpCard } from "@/components/Card"; 
+import Card, { WarpCard, ButtonCard } from "@/components/Card"; 
 import Text from "@/common/components/Text";
 import Icon from "@/common/components/Icon";
 import configs from "@/common/configs";
@@ -12,8 +12,7 @@ import Sheet from "@/components/Sheet";
 import Segment from "@/components/Segment";
 import { auto } from '@/common/common';
 import Checkbox from "@/components/Checkbox";
-import Modal from "@/components/Modal";
-import { ButtonCard } from '../../components/Card';
+import Modal from "@/components/Modal"; 
 
 const { width } = configs.screen
 
@@ -102,7 +101,7 @@ const XMLRSS = memo(({ navigation, route })=>{
                                         <WarpCard key={index} style={{ flex: 1, width: '100%' }}> 
                                             <View style={{ gap: 8, flex: 1,}}>
                                                 <Text {...state?.setting?.title} color="#3f3f3f" numberOLines={2} selectable>{item?.title?.trim()}</Text>
-                                            
+                          
                                                 <RenderHtml
                                                     ignoredDomTags={['iframe','br', 'font', 'style', 'img', 'audio', 'video']}
                                                     contentWidth={width - 24}
