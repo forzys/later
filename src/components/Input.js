@@ -14,7 +14,7 @@ const defaults = {
 
 const _textInputStyle = (borderColor) => ({
     height: 50,
-    minWidth:configs.screen.width * 0.5,
+    minWidth: configs.screen.width * 0.5,
     borderWidth: 1,
     paddingLeft: 16,
     borderRadius: 8,
@@ -133,7 +133,7 @@ export default class InteractiveTextInput extends React.Component{
             onIconPress, 
             IconComponent = TouchableOpacity,
         } = this.props;
-
+ 
         return (
             enableIcon && (
                 <IconComponent

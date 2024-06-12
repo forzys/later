@@ -382,6 +382,10 @@ const DraggableGrid = function(props) {
 }
 
 export default DraggableGrid
+
+
+
+
 const styles = StyleSheet.create({
   draggableGrid: {
     flex: 1,

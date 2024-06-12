@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { StyleSheet, Animated, Easing } from 'react-native';
 import Text from '@/common/components/Text'
 import Touchable from './Touchable'
@@ -13,11 +13,10 @@ const durationValues = {
     exit: 195,
 };
 
-class Snackbar extends Component {
+class Snackbar extends PureComponent {
     constructor(props) {
         super(props);
-        this.state = {
-
+        this.state = { 
             translateValue: new Animated.Value(0),
             hideDistance: 9999,
         };
@@ -153,9 +152,8 @@ Snackbar.defaultProps = {
     bottom: 0,
     visible: false,
     position: 'bottom',
-    // actionText: '',
-    action:'',
-    // textMessage: '',
+ 
+    action:'', 
     message: '',
     autoHidingTime: 0, // Default value will not auto hide the snack bar as the old version.
     containerStyle: {},

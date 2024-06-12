@@ -5,6 +5,7 @@ import { TouchableOpacity, ActivityIndicator, TouchableNativeFeedback } from 're
 
 const { OS } = Platform;
 
+ 
 const TouchableEffect = (props)=> {
   if (OS === 'android') {
     return <TouchableNativeFeedback {...props} />;
@@ -14,6 +15,10 @@ const TouchableEffect = (props)=> {
 }; 
  
 const Dialog = ({ 
+  visible = false,
+  onRequestClose = () => null,
+  contentInsetAdjustmentBehavior = 'never',
+
   onAccessibilityAction,
   importantForAccessibility,
   role,
@@ -23,10 +28,8 @@ const Dialog = ({
   titleStyle,
   buttons,
   buttonsStyle,
-  dialogStyle,
-  visible,
-  animationType="fade",
-  onRequestClose,
+  dialogStyle, 
+  animationType="fade", 
   onShow,
   onOrientationChange,
   onTouchOutside,
@@ -34,8 +37,7 @@ const Dialog = ({
   supportedOrientations,
   statusBarTranslucent,
   keyboardDismissMode,
-  keyboardShouldPersistTaps,
-  contentInsetAdjustmentBehavior,
+  keyboardShouldPersistTaps, 
 }) => {
   const renderContent = () => {
     return (
@@ -116,7 +118,17 @@ const Dialog = ({
   );
 };
 
-const ConfirmDialog = ({ children, negativeButton, positiveButton, message, messageStyle, ...others })  => {
+const ConfirmDialog = ({ 
+  visible = false,
+  onRequestClose = () => null,
+  contentInsetAdjustmentBehavior = 'never',
+
+  children, negativeButton, 
+  positiveButton, 
+  message,
+  messageStyle, 
+  ...others
+})  => {
   
     const getButtonBackgroundColor = (buttonProps ) => {
         const {style, disabled} = buttonProps; 
@@ -281,7 +293,18 @@ const ConfirmDialog = ({ children, negativeButton, positiveButton, message, mess
   );
 };
 
-const ProgressDialog = ({ message, messageStyle, activityIndicatorColor, activityIndicatorSize, activityIndicatorStyle, ...others })  => {
+const ProgressDialog = ({ 
+  visible = false,
+  onRequestClose = () => null,
+  contentInsetAdjustmentBehavior = 'never',
+
+  message, 
+  messageStyle, 
+  activityIndicatorColor, 
+  activityIndicatorSize, 
+  activityIndicatorStyle, 
+  ...others 
+})  => {
     return (
       <Dialog {...others}>
         <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -293,21 +316,6 @@ const ProgressDialog = ({ message, messageStyle, activityIndicatorColor, activit
       </Dialog>
     );
 };
-
-
-Dialog.defaultProps = {
-    visible: false,
-    onRequestClose: () => null,
-    contentInsetAdjustmentBehavior: 'never',
-};
-
-ConfirmDialog.defaultProps = {
-    ...Dialog.defaultProps,
-};
-ProgressDialog.defaultProps = {
-    ...Dialog.defaultProps,
-};
-    
 
 const styles = StyleSheet.create({
     onDialogStyle:(bgcolor, radius)=>({

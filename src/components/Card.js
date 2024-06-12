@@ -25,9 +25,9 @@ const SimpleCard = memo((props)=>{
     )
 })
 
-export const ButtonCard = memo(({ bold = true,  textProps={},  ...props})=>{
+export const ButtonCard = memo(({ row,  bold = true,  textProps={},  ...props})=>{
     return (
-        <SimpleCard onPress={props?.onPress} style={props.style} disabled={props?.disabled}>
+        <SimpleCard row={row} onPress={props?.onPress} style={props.style} disabled={props?.disabled}>
             <Text color={props?.color} bold={bold} mt style={props?.disabled ? styles.disabled : styles?.action} {...textProps}>{props?.text || props?.children}</Text>
         </SimpleCard>
     )
