@@ -54,9 +54,12 @@ const Layout = memo(({ freeze = true , ...props})=>{
                     onRightPress={props?.onRightPress}
                 />
 
+                
                 <View style={StyleSheet.flatten([{ flex: 1 }, props.style])}>
                     {props.children}
-                </View> 
+                </View>
+
+
             </SafeAreaView>
         </Freeze>
     )
