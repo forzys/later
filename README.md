@@ -37,7 +37,7 @@
 - 更多RSS  
 
 <!-- ![更多RSS](https://github.com/forzys/later/blob/main/preview/更多rss.png?raw=true) -->
-<img src="ttps://github.com/forzys/later/blob/main/preview/更多rss.png?raw=true" width="300" />
+<img src="https://github.com/forzys/later/blob/main/preview/更多rss.png?raw=true" width="300" />
 
 - 短视频解析 
 
@@ -59,9 +59,9 @@
 
 ### use package
 
-~~[react-native-fast-tflite](https://github.com/mrousavy/react-native-fast-tflite)~~
-~~[react-native-wishlist](https://github.com/margelo/react-native-wishlist)~~
-~~[react-native-vision-camera](https://www.npmjs.com/package/react-native-vision-camera)~~
+~~[react-native-fast-tflite](https://github.com/mrousavy/react-native-fast-tflite)~~  
+~~[react-native-wishlist](https://github.com/margelo/react-native-wishlist)~~  
+~~[react-native-vision-camera](https://www.npmjs.com/package/react-native-vision-camera)~~  
  
 <!-- http 服务 -->
 - [react-native-http-bridge-refurbished](https://github.com/Alwinator/react-native-http-bridge-refurbished)
