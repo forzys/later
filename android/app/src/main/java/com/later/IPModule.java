@@ -3,6 +3,7 @@ package com.later;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.net.wifi.WifiInfo;
+import android.net.wifi.SupplicantState;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -13,10 +14,14 @@ import com.facebook.react.bridge.WritableMap;
 
 public class IPModule extends ReactContextBaseJavaModule {
 
-    private static final String MODULE_NAME = "IPModule";
+    WifiManager wifiManager;
+
+    private static final String MODULE_NAME = "IPModule";  
+    private static final String WIFISSID_UNKNOW = "<unknown ssid>";
 
     public IPModule(ReactApplicationContext reactContext) {
-        super(reactContext);
+        super(reactContext); 
+        wifiManager = (WifiManager) reactContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
     }
 
     @Override
@@ -26,11 +31,10 @@ public class IPModule extends ReactContextBaseJavaModule {
 
    @ReactMethod
     public void getIPAddress(Promise promise) {
-        try {
-            Context context = getReactApplicationContext();
-            WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        try { 
+  
             if (wifiManager != null) {
-                WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+                WifiInfo wifiInfo = wifiManager.getConnectionInfo(); 
                 int ipAddress = wifiInfo.getIpAddress();
                 String ip = String.format(
                     "%d.%d.%d.%d",
@@ -49,4 +53,34 @@ public class IPModule extends ReactContextBaseJavaModule {
             promise.reject("ERROR", e.getMessage());
         }
     }
+
+    @ReactMethod
+    public void getWifiName(Promise promise) {
+        try {  
+            if (wifiManager != null) {
+                WifiInfo wifiInfo = wifiManager.getConnectionInfo(); 
+                String ssid = wifiInfo.getSSID();
+
+                if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
+                    ssid = ssid.substring(1, ssid.length() - 1);
+                }
+
+                if (WIFISSID_UNKNOW.equalsIgnoreCase(ssid.trim())) {
+                    
+                    if (wifiInfo.getSupplicantState() == SupplicantState.COMPLETED) {
+                        ssid = wifiInfo.getBSSID();
+                    }
+       
+                }
+
+                promise.resolve(ssid);
+            } else {
+                promise.reject("ERROR", "WifiManager is null");
+            }
+        } catch (Exception e) {
+            promise.reject("ERROR", e.getMessage());
+        }
+    } 
+     
+
 } 
