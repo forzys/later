@@ -1,15 +1,62 @@
 
 
+### 关于
+  空闲时间写一个方便自己使用的APP，添加一些常用或需要使用的功能，会不断更新拓展。
+  不涉及数据库，数据来源互联网，
 
 
-### Add package
+
+### 预览
+
+
+- 首页  
+
+![首页](https://github.com/forzys/later/blob/main/preview/首页.png?raw=true)
+
+- 便签  
+
+![便签](https://github.com/forzys/later/blob/main/preview/便签.png?raw=true)
+
+- 拓展   
+
+![拓展](https://github.com/forzys/later/blob/main/preview/拓展.png?raw=true)
+
+- 更多字体  
+
+![更多字体](https://github.com/forzys/later/blob/main/preview/更多字体.png?raw=true)
+
+- RSS订阅  
+
+![RSS订阅](https://github.com/forzys/later/blob/main/preview/rss订阅.png?raw=true)
+
+- 更多RSS  
+
+![更多RSS](https://github.com/forzys/later/blob/main/preview/更多rss.png?raw=true)
+
+- 短视频解析 
+
+![短视频解析](https://github.com/forzys/later/blob/main/preview/解析.png?raw=true)
+
+
+- 小睡眠 
+
+![小睡眠](https://github.com/forzys/later/blob/main/preview/小睡眠.png?raw=true)
+
+
+- 文字生成二维码.  
+
+![QRCODE](https://github.com/forzys/later/blob/main/preview/qrcode.png?raw=true)
+
+
+
+
+
+### use package
 
 ~~[react-native-fast-tflite](https://github.com/mrousavy/react-native-fast-tflite)~~
 ~~[react-native-wishlist](https://github.com/margelo/react-native-wishlist)~~
 ~~[react-native-vision-camera](https://www.npmjs.com/package/react-native-vision-camera)~~
-
-
-
+ 
 <!-- http 服务 -->
 - [react-native-http-bridge-refurbished](https://github.com/Alwinator/react-native-http-bridge-refurbished)
 <!-- 数据存储 -->
