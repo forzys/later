@@ -130,7 +130,7 @@ const routers = [
 		icon: 'server',
 		selectedColor: '#325BFA', 
 		name: 'Notes',
-		title: '抽屉',
+		title: '便签',
         component: NotesScreen,
 	},
 	{

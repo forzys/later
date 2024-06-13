@@ -170,7 +170,7 @@ const Home = memo(({ navigation })=>{
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 12, paddingVertical: 8 }}>
                      {
                          [
-                            { name:'Sleep', info: 'RSS在线订阅，随时随地获取最新资讯', key:'sleeps', bgcolor: '#0fa968', icon:'sleep', size:24, title: '小睡眠' }, 
+                            { name:'Sleep', info: '白噪音，小睡眠，放松心情', key:'sleeps', bgcolor: '#0fa968', icon:'sleep', size:24, title: '小睡眠' }, 
                             { name:'Feeds', info: 'RSS在线订阅，随时随地获取最新资讯', key:'feeds', bgcolor: '#7954ff', icon:'rss-feed', size:24, title: 'RSS订阅' }, 
                             { name:'Short', info: '短视频在线解析，无水印解析，保存至本地', key:'short', bgcolor: '#808836',icon:'video-switch', size:24,  title: '短视频转存' },
                             { name:'Server',info: '手机开启服务器 局域网连接 可传输文件等', key:'server',bgcolor: '#DBB5B5', icon:'server', size:20,  title: 'HTTP服务器' },
