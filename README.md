@@ -19,6 +19,11 @@
 <!-- ![便签](https://github.com/forzys/later/blob/main/preview/便签.png?raw=true) -->
  <img src="https://github.com/forzys/later/blob/main/preview/便签.png?raw=true" width="300" />
 
+- 壁纸  
+
+<!-- ![便签](https://github.com/forzys/later/blob/main/preview/便签.png?raw=true) -->
+ <img src="https://github.com/forzys/later/blob/main/preview/壁纸.png?raw=true" width="300" />
+
 - 拓展   
 
 <!-- ![拓展](https://github.com/forzys/later/blob/main/preview/拓展.png?raw=true) -->
