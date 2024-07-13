@@ -139,7 +139,7 @@ const Home = memo(({ navigation })=>{
     ]
 
     return (
-        <Layout>
+        <Layout bg="transparent">
        
             <ScrollView  style={{ flex: 1  }} contentContainerStyle={{ padding: 12, gap: 12}}> 
                  

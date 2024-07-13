@@ -19,15 +19,10 @@ const Layout = memo(({ freeze = true , ...props})=>{
             onLeftPress: navigation.goBack, 
             leftText: '返回',
             leftSize: 20,
-        } : {
-            leftIcon: props.leftIcon,
-            leftColor: props.leftColor,
-            leftCustomComponent:props.renderLeft,
-            onLeftPress: props?.onLeftPress, 
-        }
+        }: {}
     },[props.back, props?.onLeftPress, props.renderLeft, props.leftColor, props.leftIcon])
      
-
+  
     return (
         <Freeze freeze={!isFocused && freeze}> 
             <SafeAreaView style={{ flex: 1, backgroundColor: theme?.background  }}>
@@ -37,20 +32,27 @@ const Layout = memo(({ freeze = true , ...props})=>{
                 <AppBar 
                     mode="center-aligned" 
                     // statusBarHeight={insets.top} 
-                    style={{ backgroundColor: "#FFF" || props?.bg || theme?.barBg }}
+                    
+                    style={{ backgroundColor: props?.bg || theme?.barBg ||  "#FFF" }}
                     title={typeof props?.title !== 'undefined' ? props?.title : route.name}
-                    titleTextStyle={props?.titleTextStyle}
+                    titleTextStyle={props.titleTextStyle}
+                    // {...backConfig} 
  
-                    {...backConfig}
-                    // leftIcon={props?.leftIcon}
-                    // leftColor={props?.leftColor}
-                    // leftCustomComponent={props?.renderLeft}
-                    // onLeftPress={props?.onLeftPress}
+                    leftIcon={props?.leftIcon}
+                    leftColor={props?.leftColor}
+                    leftText={props.leftText}
+                    leftSize={props.leftSize}
+                    leftCustomComponent={props?.renderLeft}
+                    onLeftPress={props?.onLeftPress}
+                    leftComponentStyle={props?.leftStyle}
+
+                    {...backConfig} 
 
                     rightSize={24}
                     rightIcon={props?.rightIcon}
                     rightColor={props?.rightColor}
                     rightCustomComponent={props?.renderRight} 
+                    rightComponentStyle={props?.rightStyle}
                     onRightPress={props?.onRightPress}
                 />
 

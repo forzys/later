@@ -19,6 +19,10 @@ export default memo((props)=>{
     const [storage] = useStorage('later.config')
     const [timeLine, setTimeLine] = useState([]);
     const [sleeps, setSleeps] = useState([]);
+    const [wallpaper, setWallpaper] = useState([]);
+    const [faces, setFaces] = useState([]);
+
+
     const [visible, setVisible] = useState(false);
  
     const onGetSleeps = ()=>{ 
@@ -34,7 +38,6 @@ export default memo((props)=>{
             '#3297ae',
             '#2b778f',
         ]
-      
         fetcher.notion.post('5f4776a24dd54afdb4b6d5c3dde1ef47/query').then(res=>{
             const properties = res.results?.map((obj)=>{
                 const { Name, CName, Tags, File }= obj?.properties; 
@@ -65,6 +68,42 @@ export default memo((props)=>{
             setSleeps(sleeps);
         })
     }
+ 
+    const onGetWallpaper = ()=>{
+        return new Promise((resolve, reject)=>{ 
+            fetcher.notion.post('30af5c7d148e44da84e1b51a500ce90b/query').then(res=>{
+                const wallPaper = res.results?.map((obj)=>{
+                    const { Name, Tags, Files, Content }= obj?.properties; 
+ 
+                    return {
+                        name: Name?.title[0]?.plain_text, 
+                        tag: Tags?.multi_select[0]?.name,
+                        // uri: Files?.files[0]?.file?.url,
+                        content: auto.jsonFormat(Content?.rich_text[0]?.plain_text, []), 
+                    } 
+                })
+                
+                setWallpaper(wallPaper) 
+            }) 
+        }) 
+    }
+
+    const onGetFace = ()=>{
+
+        fetcher.notion.post('8e3d63d6941847e791ea39d9554eeff0/query', { filter: {property: 'Tag', select: { equals: "face" }} }).then(res=>{
+            const faces = res.results?.map((obj)=>{
+                const { Name, Tags, Files, Content }= obj?.properties; 
+                const content = auto.jsonFormat(Content?.rich_text[0]?.plain_text, [])  
+                return {
+                    name: Name?.title[0]?.plain_text, 
+                    content: content
+                }
+            })
+            
+            setFaces(faces) 
+        })
+    }
+ 
   
     const onGetTimeLine = (local)=> {
         const version = storage?.getNumber('version') || 0
@@ -131,16 +170,11 @@ export default memo((props)=>{
             console.log({ e })
         })
     }
-
-
-
-
-
+ 
     // const getRemoteRun = (key, path)=>{
     // }
     // const getLocalRun = (info)=>{
-    // }
-
+    // } 
     // const getConfig = ()=>{
 
     //     fetcher.notion.post('956ca90f68dd46a8996070e67ef76521/query').then(res=>{
@@ -182,12 +216,19 @@ export default memo((props)=>{
         if(storage && !current.loading){
             current.loading = true
             const localTimeLine = auto.jsonFormat(storage?.getString('timeline'), [])
+            
             onGetTimeLine(localTimeLine) 
             onGetSleeps()
+
+            onGetWallpaper()
+            onGetFace()
         } 
     },[storage])
 
 
+
+
+    // console.log({  wallpaper })
    
 
     return (
@@ -195,6 +236,8 @@ export default memo((props)=>{
             value={{
                 timeLine,
                 sleeps,
+                wallpaper,
+                faces,
                 version: current.version,
             }}
         >

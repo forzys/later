@@ -157,7 +157,7 @@ export const AppBar =  ({
               ) : null
         }
 
-        <Text numberOfLines={1} style={[{ maxWidth: (width - 24 * 2), fontSize: 20, fontWeight: "800", }, titleTextStyle]}>
+        <Text numberOfLines={1} style={[{ maxWidth: (width - 24 * 2), fontSize: 16, color:'#000', fontWeight: "800", }, titleTextStyle]}>
             {title}
         </Text>
 

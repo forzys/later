@@ -1,4 +1,4 @@
-import { memo, useRef } from "react"
+import { memo, useRef, useCallback } from "react"
 import Layout from "@/layout/Layout"
 import { ScrollView, View } from 'react-native';
 import Text from '@/common/components/Text'
@@ -8,10 +8,13 @@ import {useUpdate, useReceive} from "@/hooks/index";
 import Input from "@/components/Input";
 import Card, {ButtonCard, WarpCard} from "@/components/Card";
 import QRCode from "@/components/QRCode";
-
+import configs from '@/common/configs'
+import fetcher from '@/common/fetcher'
+import RNFetchBlob from 'react-native-blob-util'
 import {Received} from "@/components/Progress";
 
 const QR = memo(({ navigation })=>{
+    const svgRef = useRef();
     const progressRef = useRef(null);
     const [state, setState] = useUpdate({
         value: ''
@@ -22,6 +25,30 @@ const QR = memo(({ navigation })=>{
         // console.log({ value: state?.value })
         setState({ qrvalue: state?.value })
     }
+
+ 
+    const download = useCallback(() => {
+      svgRef.current?.toDataURL(async (data) => {
+        const path = `${configs.dirs.CacheDir}/aliyun.png`;
+        await RNFetchBlob.fs.writeFile(path, data, 'base64');
+ 
+        fetcher.MediaCollection.copyToMediaStore({
+                name: 'aliyun.png', // name of the file
+                parentFolder: '', // subdirectory in the Media Store, e.g. HawkIntech/Files to create a folder HawkIntech with a subfolder Files and save the image within this folder
+                mimeType: 'image/png' // MIME type of the file
+            },
+            'Image', // Media Collection to store the file in ("Audio" | "Image" | "Video" | "Download")
+            path // Path to the file being copied in the apps own storage
+        ).then((result)=>{ 
+            console.log({result  })
+        }).catch(e=>{
+            console.log({e  })
+        })
+
+
+
+      })
+    }, [svgRef.current])
 
     return (
         <Layout back> 
@@ -60,19 +87,23 @@ const QR = memo(({ navigation })=>{
 
                 <View style={{ flexDirection:'row', alignItems:'center', justifyContent:'center' }}>
                     {
-                        state?.qrvalue && (
-                            <View style={{  padding: 12, backgroundColor:'#FFF', borderRadius: 6}}>  
+                          (
+                            <View style={{ padding: 12, backgroundColor:'#FFF', borderRadius: 6}}>  
                                 <QRCode
-                                    value={state.qrvalue}
+                                    ref={svgRef}
+                                    value={"https://www.alipan.com/s/DkH7jWvcX7i"}
                                     size={120}
+                                    logoSize={30}
                                     dotScale={0.8}
                                     dotRadius="50%"
                                     positionRadius={["5%", "1%"]}
                                     errorCorrection="H"
+                                    logo={'https://img.alicdn.com/imgextra/i2/O1CN011vHpiQ251TseXpbH7_!!6000000007466-2-tps-120-120.png'}
                                 /> 
+                                <ButtonCard onPress={download}>download</ButtonCard>
                             </View> 
                         )
-                    } 
+                    }
                 </View>
             </ScrollView> 
         </Layout>

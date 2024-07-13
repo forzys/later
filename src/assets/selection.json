@@ -902,6 +902,45 @@
         "name": "pause-circle",
         "iconSetName": "boxicons"
       }
+    },
+    {
+      "id": 54208,
+      "iconSetName": "coolicons",
+      "name": "download_done",
+      "icon": {
+        "paths": [
+          "M810.7 810.7H213.3V725.3H810.7V810.7ZM426.7 615.3L256 444.6 316.2 384.4 426.7 494.5 707.8 213.3 768 273.9 426.7 615.3Z"
+        ],
+        "attrs": [],
+        "width": 1024
+      },
+      "properties": {
+        "name": "download_done",
+        "iconSetName": "coolicons"
+      }
+    },
+    {
+      "id": 76697,
+      "iconSetName": "ion-icons-outline",
+      "name": "cloud-download-outline",
+      "icon": {
+        "paths": [
+          "M640 672h152c110 0 200-42.4 200-151.2s-106-146.9-192-151.2C782.2 199.5 658 96 512 96c-138 0-226.9 91.6-256 182.4-120 11.4-224 71.8-224 196.8S140 672 272 672h112m0 128.2l128 127.8 128-127.8M512 448v448.1"
+        ],
+        "attrs": [
+          {
+            "fill": "none",
+            "strokeWidth": 64,
+            "strokeLinejoin": "round",
+            "strokeLinecap": "round"
+          }
+        ],
+        "width": 1024
+      },
+      "properties": {
+        "name": "cloud-download",
+        "iconSetName": "ion-icons-outline"
+      }
     }
   ]
 }

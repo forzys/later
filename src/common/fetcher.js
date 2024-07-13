@@ -157,6 +157,8 @@ const fetcher = {
     list: ( name = 'html') => RNFetchBlob.session(name).list(),
     session: ( name = 'cache') => RNFetchBlob.session(name).list(),
     file: (path) => RNFetchBlob.fs.readFile(path, 'utf8'),
+ 
+    MediaCollection: RNFetchBlob.MediaCollection,
  }
 
  export default fetcher

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { Image as RNImage,Text,  View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Image as RNImage, Text,  View, StyleSheet, TouchableOpacity } from 'react-native';
 import configs from '@/common/configs'  
 import Icon from '@/common/components/Icon'  
 const { width, height } = configs.screen
@@ -38,7 +38,7 @@ const Image = (props) => {
       ? image
       : isVideo
       ? image[videoURLKey]
-      : image[sourceKey]);
+      : image[sourceKey]) ;
   const size =
     index === 0
       ? Math.round(width / 7)
@@ -86,7 +86,7 @@ const Image = (props) => {
 
   return (
     <TouchableOpacity
-      style={[style.container, imageStyle]}
+      style={[style?.container, imageStyle]}
       onPress={onPress}
       activeOpacity={activeOpacity}
     >
@@ -573,8 +573,8 @@ ImageGrid.defaultProps = {
     '#86aba1',
     '#f4eeed',
   ],
-  sourceKey: 'url',
-  videoURLKey: 'url',
+  sourceKey: 'uri',
+  videoURLKey: 'uri',
   width: width,
   spaceSize: 3,
   activeOpacity: 0.9,

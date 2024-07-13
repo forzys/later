@@ -1,61 +1,57 @@
 import React, { forwardRef, memo, useMemo, useCallback, useEffect, useState } from 'react';
 import { FlatList, View, Dimensions, SectionList } from 'react-native';
-// import { generateStyles, calculateDimensions, getAdjustedTotalDimensions, } from '@/common/common';
-// import useRows, {useRenderRow} from '@/hooks/useRows';
- 
- 
-  function generateStyles({
-    itemDimension,
-    containerDimension,
-    spacing,
-    fixed,
-    horizontal,
-    fixedSpacing,
-    itemsPerRow,
-  }) {
-    let rowStyle = {
+
+function generateStyles({
+  itemDimension,
+  containerDimension,
+  spacing,
+  fixed,
+  horizontal,
+  fixedSpacing,
+  itemsPerRow,
+}) {
+  let rowStyle = {
+    flexDirection: 'row',
+    paddingLeft: fixed ? fixedSpacing : spacing,
+    paddingBottom: spacing,
+  };
+
+  let containerStyle = {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: fixed ? itemDimension : (containerDimension - spacing),
+    marginRight: fixed ? fixedSpacing : spacing,
+  };
+
+  const containerFullWidthStyle = {
+    flexDirection: 'column',
+    justifyContent: 'center',
+    width: containerDimension * itemsPerRow - spacing,
+    marginBottom: spacing,
+  };
+
+  if (horizontal) {
+    rowStyle = {
+      flexDirection: 'column',
+      paddingTop: fixed ? fixedSpacing : spacing,
+      paddingRight: spacing,
+    };
+
+    containerStyle = {
       flexDirection: 'row',
-      paddingLeft: fixed ? fixedSpacing : spacing,
-      paddingBottom: spacing,
-    };
-  
-    let containerStyle = {
-      flexDirection: 'column',
       justifyContent: 'center',
-      width: fixed ? itemDimension : (containerDimension - spacing),
-      marginRight: fixed ? fixedSpacing : spacing,
-    };
-  
-    const containerFullWidthStyle = {
-      flexDirection: 'column',
-      justifyContent: 'center',
-      width: containerDimension * itemsPerRow - spacing,
-      marginBottom: spacing,
-    };
-  
-    if (horizontal) {
-      rowStyle = {
-        flexDirection: 'column',
-        paddingTop: fixed ? fixedSpacing : spacing,
-        paddingRight: spacing,
-      };
-  
-      containerStyle = {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        height: fixed ? itemDimension : (containerDimension - spacing),
-        marginBottom: fixed ? fixedSpacing : spacing,
-      };
-    }
-  
-    return {
-      containerFullWidthStyle,
-      containerStyle,
-      rowStyle,
+      height: fixed ? itemDimension : (containerDimension - spacing),
+      marginBottom: fixed ? fixedSpacing : spacing,
     };
   }
 
-  
+  return {
+    containerFullWidthStyle,
+    containerStyle,
+    rowStyle,
+  };
+}
+
 function getStyleDimensions(style,  horizontal = false) {
     let space1 = 0;
     let space2 = 0;
@@ -203,8 +199,7 @@ const useDimensions = (props) => {
             setTotalDimension(newTotalDimension);
           }
         }
-  
-        // call onLayout prop if passed
+   
         if (onLayout) {
           onLayout(e);
         }
@@ -253,8 +248,7 @@ function chunkArray(array = [], size) {
     }
     return acc;
   }, []);
-}
-
+} 
 
 const useRows = ({
   data, itemsPerRow, invertedRow, keyExtractor, onItemsPerRowChange,

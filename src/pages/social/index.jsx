@@ -18,7 +18,7 @@ const { screen } = configs
 export default function App() {
 	const [state, setState, { ref, timer }] = useUpdate({ })
  
- 
+	 
 	return (
 		<Layout style={{ padding: 12 }}>
 			 <View>

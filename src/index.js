@@ -23,6 +23,7 @@ import ModalScreen from "./pages/modals/index";
 import MediaScreen from "./pages/media/index"; 
 
 import ExpandsScreen from "./pages/expands/index";
+import WallpaperScreen from "./pages/expands/wallpaper";
 import FontsScreen from "./pages/expands/fonts";
 import ShortScreen from "./pages/expands/short";
 import ServerScreen from "./pages/expands/server";
@@ -76,8 +77,7 @@ const TabBar = (props)=>(
 const RoutersHoc = (routers)=>{
     const tabBarIcon = (name) => ({ focused, color, size }) => <Icon icon={name} size={22} color={color} />;
     return memo((props)=>{
-		const { fontName = 'Roboto' } = useFontFace();
- 
+		const { fontName = 'Roboto' } = useFontFace(); 
         return (
             <Tab.Navigator
                 screenOptions={{
@@ -94,7 +94,7 @@ const RoutersHoc = (routers)=>{
 					routers?.map((item, index)=>(
 						<Tab.Screen
 							key={item.name}
-							name={item.name}
+							name={item.title}
 							title={item?.title}
 							component={item.component}
                             options={{
@@ -137,8 +137,8 @@ const routers = [
 		icon: 'shape-square',
 		selectedColor: '#325BFA', 
 		name: 'Social',
-		title: '广场',
-        component: SocialScreen,
+		title: '壁纸',
+        component: WallpaperScreen,
 	},
 	{ 
 		icon: 'extension',

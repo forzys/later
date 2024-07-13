@@ -9,7 +9,7 @@ import {auto, assets} from "@/common/common";
 const Me = memo((props)=>{ 
  
     return (
-        <Layout style={{ paddingHorizontal: 12 }}>
+        <Layout title="" style={{ paddingHorizontal: 12 }}>
             <View style={{flexDirection:'row', gap: 24, alignItems:'center', justifyContent:'center'}}> 
                 <View style={{ backgroundColor:'#FFF', width: 120, height: 120, borderRadius: 60, padding: 12, overflow:'hidden' }}>
                     <Image source={{ uri: 'https://avatar.iran.liara.run/public/boy'}} style={{flex: 1}} />
